@@ -4,7 +4,7 @@ namespace Data.Repository
 {
     public interface IUnitOfWork
     {
-        Task SaveAsync();
+        Task SaveChangesAsync();
         IRepository<Instructor> Instructor { get; }
     }
 }

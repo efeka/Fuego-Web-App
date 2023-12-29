@@ -15,7 +15,7 @@ namespace Data.Repository
             Instructor = new Repository<Instructor>(db);
         }
 
-        public async Task SaveAsync()
+        public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();
         }
