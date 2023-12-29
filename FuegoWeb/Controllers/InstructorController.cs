@@ -1,21 +1,21 @@
-﻿using Data.Repository;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using Services;
 
 namespace FuegoWeb.Controllers
 {
     public class InstructorController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly InstructorService _instructorService;
 
-        public InstructorController(IUnitOfWork unitOfWork)
+        public InstructorController(InstructorService instructorService)
         {
-            _unitOfWork = unitOfWork;
+            _instructorService = instructorService;
         }
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Instructor> instructors = await _unitOfWork.Instructor.GetAllAsync();
+            IEnumerable<Instructor> instructors = await _instructorService.GetAllAsync();
             return View(instructors);
         }
 
