@@ -26,7 +26,7 @@ namespace Services
             return await _unitOfWork.Instructor.GetAllAsync(includeProperties);
         }
 
-        public async Task<Instructor?> GetAsync(Expression<Func<Instructor, bool>> filter, string? includeProperties = null)
+        public async Task<Instructor> GetAsync(Expression<Func<Instructor, bool>> filter, string? includeProperties = null)
         {
             Instructor? instructor = await _unitOfWork.Instructor.GetAsync(filter, includeProperties);
             if (instructor == null)
