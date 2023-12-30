@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -13,15 +15,10 @@ namespace Models
         [Required]
         public string Surname { get; set; } = string.Empty;
 
-        [Required]
-        // [RegularExpression(@"^\(\d{3}\)\s?\d{3}\s?\d{2}\s?\d{2}$")]
-        public string PhoneNumber { get; set; } = string.Empty;
+        [DisplayName("Last Payment Date")]
+        public DateTime? LastPayment { get; set; }
 
-        [Required]
-        // [RegularExpression(@"^TR\d{2}(\s?\d{4}){3}\s?\d{4}\s?\d{4}\s?\d{4}\s?\d{4}\s?\d{2}$")]
-        public string IBAN { get; set; } = string.Empty;
-
-        [Required]
-        public DateTime LastPayment { get; set; }
+        [ValidateNever]
+        public string ImageUrl { get; set; } = string.Empty;
     }
 }
