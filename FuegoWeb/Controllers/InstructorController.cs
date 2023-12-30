@@ -19,5 +19,26 @@ namespace FuegoWeb.Controllers
             return View(instructors);
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Instructor instructor, IFormFile? file)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            await _instructorService.AddAsync(instructor, file);
+            TempData["success"] = "Instructor created successfully";
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            Instructor instructorFromDb = await _instructorService.GetAsync(u => u.Id == id);
+            return View(instructorFromDb);
+        }
     }
 }

@@ -1,0 +1,52 @@
+﻿@using Models
+@model Instructor;
+
+<div class="col-12 text center">
+    <h2 class="text-white py-2">Edit Instructor</h2>
+</div>
+
+<form method="post">
+    <input asp-for="Id" hidden />
+
+    <div class="form-floating py-2 col-12">
+        <input asp-for="Name" class="form-control border-o shadow" />
+        <label asp-for="Name" class="ms-2"></label>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <input asp-for="Surname" class="form-control border-o shadow" />
+        <label asp-for="Surname" class="ms-2"></label>
+        <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <input asp-for="LastPayment" class="form-control border-o shadow" />
+        <label asp-for="LastPayment" class="ms-2"></label>
+        <span asp-validation-for="LastPayment" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <input type="file" name="file" class="form-control border-o shadow" />
+        <label asp-for="ImageUrl" class="ms-2"></label>
+    </div>
+
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <button type="submit" class="btn btn-primary form-control">Update</button>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="Instructor" asp-action="Index" class="btn btn-outline-secondary border form-control">Back to List</a>
+        </div>
+    </div>
+
+    <div>
+        <img src="@Model.ImageUrl" width="100" />
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
