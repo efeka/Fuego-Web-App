@@ -5,8 +5,9 @@
     <h2 class="text-white py-2">Edit Instructor</h2>
 </div>
 
-<form method="post">
+<form method="post" class="row" enctype="multipart/form-data">
     <input asp-for="Id" hidden />
+    <input asp-for="ImageUrl" hidden />
 
     <div class="form-floating py-2 col-12">
         <input asp-for="Name" class="form-control border-o shadow" />

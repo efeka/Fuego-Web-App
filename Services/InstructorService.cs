@@ -3,6 +3,7 @@ using Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Models;
 using System.Linq.Expressions;
 
@@ -10,13 +11,24 @@ namespace Services
 {
     public class InstructorService : IGenericService<Instructor>
     {
+        private readonly IConfiguration _config;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public InstructorService(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+        private readonly string _instructorImagesDir;
+        private readonly string _defaultImageFileName;
+
+        public InstructorService(IConfiguration config, IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
+            _config = config;
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
+
+            _instructorImagesDir = config["RelativeWWWImagePaths:InstructorImagesDir"]
+                ?? throw new MissingConfigurationException("RelativeWWWImagePaths:InstructorImagesDir");
+
+            _defaultImageFileName = config["RelativeWWWImagePaths:DefaultImageFileName"]
+                ?? throw new MissingConfigurationException("RelativeWWWImagePaths:DefaultImageFileName");
         }
 
         public async Task<JsonResult> GetApiDataAsync()
@@ -40,52 +52,74 @@ namespace Services
 
         public async Task AddAsync(Instructor entity)
         {
-            await AddAsync(entity, null);
+            await UpsertAsync(entity, null);
         }
 
-        public async Task AddAsync(Instructor entity, IFormFile? file)
+        public async Task UpdateAsync(Instructor entity)
         {
-            try
+            await UpsertAsync(entity, null);
+        }
+
+        public async Task UpsertAsync(Instructor entity, IFormFile? file)
+        {
+            if (entity.LastPayment == null)
+                entity.LastPayment = DateTime.MinValue;
+
+            // Insert
+            if (entity.Id == 0)
             {
-                HandleInstructorImageFile(entity, file);
-
-                if (entity.LastPayment == null)
-                    entity.LastPayment = DateTime.MinValue;
-
+                AddNewOrDefaultImage(entity, file);
                 _unitOfWork.Instructor.Add(entity);
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch (IOException ex)
+            // Update
+            else
             {
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                throw;
+                // If a new image file was provided, delete the old image first
+                if (file != null)
+                {
+                    DeleteImageFile(entity.ImageUrl);
+                    AddNewOrDefaultImage(entity, file);
+                }
+
+                _unitOfWork.Instructor.Update(entity);
+                await _unitOfWork.SaveChangesAsync();
             }
         }
 
-        private void HandleInstructorImageFile(Instructor entity, IFormFile? file)
+        private void DeleteImageFile(string imageUrl)
         {
-            string imagesDir = Path.Combine(
-                _webHostEnvironment.WebRootPath,
-                @"images\instructors");
-
-            string imageFileName;
-            // If an image file was uploaded, save it under wwwroot/images/instructors
-            if (file != null)
+            string defaultImagePath = Path.Combine("\\", _instructorImagesDir, _defaultImageFileName);
+            if (imageUrl != defaultImagePath)
             {
-                imageFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                using var fileStream = new FileStream(Path.Combine(imagesDir, imageFileName), FileMode.Create);
-                file.CopyTo(fileStream);
+                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, imageUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImagePath))
+                    System.IO.File.Delete(oldImagePath);
             }
-            // If an image file was not provided, assign the default picture to the instructor
-            else
-                imageFileName = "default_user.png";
+        }
 
-            entity.ImageUrl = Path.Combine("/images/instructors/", imageFileName);
+        private void AddNewOrDefaultImage(Instructor entity, IFormFile? file)
+        {
+            string imageFileName;
+            string imagesDir = Path.Combine(_webHostEnvironment.WebRootPath, _instructorImagesDir);
+
+            if (file != null)
+                imageFileName = SaveImage(file, imagesDir);
+            else
+                imageFileName = _defaultImageFileName;
+
+            entity.ImageUrl = Path.Combine("\\", _instructorImagesDir, imageFileName);
+        }
+
+        private string SaveImage(IFormFile file, string imagesDir)
+        {
+            string imageFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string imagePath = Path.Combine(imagesDir, imageFileName);
+
+            using var fileStream = new FileStream(imagePath, FileMode.Create);
+            file.CopyTo(fileStream);
+
+            return imageFileName;
         }
 
         public async Task DeleteAsync(int id)
@@ -95,16 +129,6 @@ namespace Services
                 throw new EntityNotFoundException(id);
 
             _unitOfWork.Instructor.Delete(instructorToBeDeleted);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Instructor entity)
-        {
-            Instructor? instructorToBeUpdated = await _unitOfWork.Instructor.GetAsync(e => e.Id == entity.Id);
-            if (instructorToBeUpdated == null)
-                throw new EntityNotFoundException(entity.Id);
-
-            _unitOfWork.Instructor.Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }
     }

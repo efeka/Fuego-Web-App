@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{68F15875-DC7C-4EDF-B540-31ADF23BF85E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{642AD543-0529-4F26-88BC-19FE0C3F2F1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exceptions", "Exceptions\Exceptions.csproj", "{642AD543-0529-4F26-88BC-19FE0C3F2F1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{6AB49BC3-50C3-412C-8983-1CB877E10202}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{642AD543-0529-4F26-88BC-19FE0C3F2F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{642AD543-0529-4F26-88BC-19FE0C3F2F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{642AD543-0529-4F26-88BC-19FE0C3F2F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB49BC3-50C3-412C-8983-1CB877E10202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB49BC3-50C3-412C-8983-1CB877E10202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB49BC3-50C3-412C-8983-1CB877E10202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB49BC3-50C3-412C-8983-1CB877E10202}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
