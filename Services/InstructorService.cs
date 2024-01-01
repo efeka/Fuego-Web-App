@@ -10,7 +10,6 @@ namespace Services
 {
     public class InstructorService : IGenericService<Instructor>
     {
-        private readonly IConfiguration _config;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -19,7 +18,6 @@ namespace Services
 
         public InstructorService(IConfiguration config, IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
-            _config = config;
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
 
