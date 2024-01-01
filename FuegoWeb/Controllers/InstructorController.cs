@@ -1,4 +1,5 @@
-﻿using FuegoWeb.Models;
+﻿using Exceptions;
+using FuegoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -82,6 +83,24 @@ namespace FuegoWeb.Controllers
         {
             IEnumerable<Instructor> list = await _instructorService.GetAllAsync();
             return Json(new { data = list });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _instructorService.DeleteAsync(id);
+                return Json(new { success = true, message = $"Instructor deleted successfully", deletedId = id });
+            }
+            catch (EntityNotFoundException)
+            {
+                return Json(new { success = false, message = $"Could not find Instructor with id {id}" });
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = $"Could not delete Instructor with id {id}" });
+            }
         }
 
         #endregion
