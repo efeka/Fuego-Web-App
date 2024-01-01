@@ -2,7 +2,6 @@
 using Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Models;
 using System.Linq.Expressions;
@@ -29,12 +28,6 @@ namespace Services
 
             _defaultImageFileName = config["RelativeWWWImagePaths:DefaultImageFileName"]
                 ?? throw new MissingConfigurationException("RelativeWWWImagePaths:DefaultImageFileName");
-        }
-
-        public async Task<JsonResult> GetApiDataAsync()
-        {
-            IEnumerable<Instructor> instructors = await _unitOfWork.Instructor.GetAllAsync();
-            return new JsonResult(instructors);
         }
 
         public async Task<IEnumerable<Instructor>> GetAllAsync(string? includeProperties = null)

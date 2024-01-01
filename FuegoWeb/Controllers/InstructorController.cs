@@ -74,5 +74,16 @@ namespace FuegoWeb.Controllers
                 });
             }
         }
+
+        #region API Calls
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<Instructor> list = await _instructorService.GetAllAsync();
+            return Json(new { data = list });
+        }
+
+        #endregion
     }
 }
