@@ -35,12 +35,9 @@ namespace Services
             return await _unitOfWork.Instructor.GetAllAsync(includeProperties);
         }
 
-        public async Task<Instructor> GetAsync(Expression<Func<Instructor, bool>> filter, string? includeProperties = null)
+        public async Task<Instructor?> GetAsync(Expression<Func<Instructor, bool>> filter, string? includeProperties = null)
         {
-            Instructor? instructor = await _unitOfWork.Instructor.GetAsync(filter, includeProperties);
-            if (instructor == null)
-                throw new EntityNotFoundException();
-            return instructor;
+            return await _unitOfWork.Instructor.GetAsync(filter, includeProperties);
         }
 
         public async Task AddAsync(Instructor entity)
@@ -80,6 +77,17 @@ namespace Services
             }
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            Instructor? instructorToBeDeleted = await _unitOfWork.Instructor.GetAsync(e => e.Id == id);
+            if (instructorToBeDeleted == null)
+                throw new EntityNotFoundException(id);
+
+            DeleteImageFile(instructorToBeDeleted.ImageUrl);
+            _unitOfWork.Instructor.Delete(instructorToBeDeleted);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
         private void DeleteImageFile(string imageUrl)
         {
             string defaultImagePath = Path.Combine("\\", _instructorImagesDir, _defaultImageFileName);
@@ -113,16 +121,6 @@ namespace Services
             file.CopyTo(fileStream);
 
             return imageFileName;
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            Instructor? instructorToBeDeleted = await _unitOfWork.Instructor.GetAsync(e => e.Id == id);
-            if (instructorToBeDeleted == null)
-                throw new EntityNotFoundException(id);
-
-            _unitOfWork.Instructor.Delete(instructorToBeDeleted);
-            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
