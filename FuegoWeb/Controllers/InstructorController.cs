@@ -32,9 +32,20 @@ namespace FuegoWeb.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            await _instructorService.UpsertAsync(instructor, file);
-            TempData["success"] = "Instructor created successfully";
-            return RedirectToAction("Index");
+            try
+            {
+                await _instructorService.UpsertAsync(instructor, file);
+                TempData["success"] = "Instructor created successfully";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return View("Error", new ErrorViewModel()
+                {
+                    ErrorMessage = "Failed to insert Instructor"
+                });
+            }
         }
 
         public async Task<IActionResult> Edit(int id)
