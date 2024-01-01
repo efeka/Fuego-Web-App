@@ -1,4 +1,5 @@
-﻿using FuegoWeb.Models;
+﻿using Exceptions;
+using FuegoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
@@ -47,5 +48,75 @@ namespace FuegoWeb.Controllers
             }
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                CourseType? courseTypeFromDb = await _courseTypeService.GetAsync(u => u.Id == id);
+                if (courseTypeFromDb == null)
+                    throw new EntityNotFoundException(id);
+
+                return View(courseTypeFromDb);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return View("Error", new ErrorViewModel()
+                {
+                    ErrorMessage = "Failed to edit Course Type"
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CourseType courseType)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View();
+
+                await _courseTypeService.UpdateAsync(courseType);
+                TempData["success"] = "Course Type edited successfully";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return View("Error", new ErrorViewModel()
+                {
+                    ErrorMessage = "Failed to edit Course Type"
+                });
+            }
+        }
+
+        #region API Calls
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<CourseType> list = await _courseTypeService.GetAllAsync();
+            return Json(new { data = list });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _courseTypeService.DeleteAsync(id);
+                return Json(new { success = true, message = $"Course Type deleted successfully", deletedId = id });
+            }
+            catch (EntityNotFoundException)
+            {
+                return Json(new { success = false, message = $"Could not find Course Type with id {id}" });
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = $"Could not delete Course Type with id {id}" });
+            }
+        }
+
+        #endregion
     }
 }

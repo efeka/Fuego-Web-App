@@ -52,13 +52,16 @@ namespace FuegoWeb.Controllers
         {
             try
             {
-                Instructor instructorFromDb = await _instructorService.GetAsync(u => u.Id == id);
+                Instructor? instructorFromDb = await _instructorService.GetAsync(u => u.Id == id);
+                if (instructorFromDb == null)
+                    throw new EntityNotFoundException(id);
+
                 return View(instructorFromDb);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return View("ErrorView", new ErrorViewModel()
+                return View("Error", new ErrorViewModel()
                 {
                     ErrorMessage = "Failed to edit Instructor"
                 });
