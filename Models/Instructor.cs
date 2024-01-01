@@ -15,6 +15,9 @@ namespace Models
         [Required]
         public string Surname { get; set; } = string.Empty;
 
+        [Required]
+        public string Description { get; set; } = string.Empty;
+
         [DisplayName("Last Payment Date")]
         public DateTime? LastPayment { get; set; }
 

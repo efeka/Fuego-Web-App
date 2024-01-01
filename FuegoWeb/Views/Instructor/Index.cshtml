@@ -25,6 +25,7 @@
         <tr>
             <th>Name</th>
             <th>Surname</th>
+            <th>Description</th>
             <th>Last Payment Date</th>
         </tr>
     </thead>
@@ -34,6 +35,7 @@
             <tr id="row_@obj.Id">
                 <td>@obj.Name</td>
                 <td>@obj.Surname</td>
+                <td class="descriptionCell">@Html.Raw(@obj.Description)</td>
                 <td>@obj.LastPayment</td>
                 <td>
                     <div class="d-flex justify-content-between">
