@@ -43,7 +43,7 @@ namespace FuegoWeb.Controllers
                 Console.WriteLine(ex.ToString());
                 return View("Error", new ErrorViewModel()
                 {
-                    ErrorMessage = "Failed to insert Instructor"
+                    ErrorMessage = "Failed to create Instructor"
                 });
             }
         }

@@ -1,0 +1,27 @@
+﻿@using Models
+@model CourseType
+
+<div class="col-12 text center">
+    <h2 class="text-white" py-2>Create Course Type</h2>
+</div>
+
+<form method="post" class="row">
+    <div class="form-floating py-2 col-12">
+        <input asp-for="Type" class="form-control border-o shadow" />
+        <label asp-for="Type" class="ms-2"></label>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <button type="submit" class="btn btn-primary form-control">Create</button>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="CourseType" asp-action="Index" class="btn btn-outline-secondary border form-control">Back to List</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

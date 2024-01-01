@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<InstructorService>();
+builder.Services.AddScoped<CourseTypeService>();
 
 var app = builder.Build();
 

@@ -1,0 +1,53 @@
+﻿@using Models
+@model List<CourseType>
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-dark bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text center">
+                <h2 class="text-white py-2">Course Type List</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body p-4">
+    <div class="row pb-3">
+        <div class="col-6">
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="CourseType" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Create New Course Type
+            </a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr id="row_@obj.Id">
+                    <td>@obj.Type</td>
+                    <td>
+                        <div class="d-flex justify-content-between">
+                            <a asp-asp-controller="CourseType" asp-action="Edit" asp-route-id="@obj.Id" class="w-75 btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i>Edit
+                            </a>
+                            <a onClick="Delete('courseType/delete/@obj.Id')" class="w-75 btn btn-danger mx-2">
+                                <i class="bi bi-trash"></i>Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script src="~/js/courseType.js" defer></script>
+    <partial name="_ValidationScriptsPartial" />
+}
