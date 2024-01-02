@@ -2,6 +2,7 @@ using Data.Data;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Services;
+using Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +13,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ImageHandler>();
 builder.Services.AddScoped<InstructorService>();
 builder.Services.AddScoped<CourseTypeService>();
+builder.Services.AddScoped<CourseService>();
 
 var app = builder.Build();
 

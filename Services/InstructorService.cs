@@ -14,7 +14,7 @@ namespace Services
         private readonly ImageHandler _imageHandler;
 
         private readonly string _instructorImagesDir;
-        private readonly string _defaultImageFileName;
+        private readonly string _defaultInstructorImageFileName;
         private readonly string _defaultImagePath;
 
         public InstructorService(IConfiguration config, IUnitOfWork unitOfWork, ImageHandler imageHandler)
@@ -25,10 +25,10 @@ namespace Services
             _instructorImagesDir = config["RelativeWWWImagePaths:InstructorImagesDir"]
                 ?? throw new MissingConfigurationException("RelativeWWWImagePaths:InstructorImagesDir");
 
-            _defaultImageFileName = config["RelativeWWWImagePaths:DefaultImageFileName"]
-                ?? throw new MissingConfigurationException("RelativeWWWImagePaths:DefaultImageFileName");
+            _defaultInstructorImageFileName = config["RelativeWWWImagePaths:DefaultInstructorImageFileName"]
+                ?? throw new MissingConfigurationException("RelativeWWWImagePaths:DefaultInstructorImageFileName");
 
-            _defaultImagePath = Path.Combine("\\", _instructorImagesDir, _defaultImageFileName);
+            _defaultImagePath = Path.Combine("\\", _instructorImagesDir, _defaultInstructorImageFileName);
         }
 
         public async Task<IEnumerable<Instructor>> GetAllAsync(string? includeProperties = null)
@@ -56,7 +56,7 @@ namespace Services
             if (entity.LastPayment == null)
                 entity.LastPayment = DateTime.MinValue;
 
-            string imageUrl = _imageHandler.GetNewOrDefaultImagePath(file, _instructorImagesDir, _defaultImageFileName);
+            string imageUrl = _imageHandler.GetNewOrDefaultImagePath(file, _instructorImagesDir, _defaultInstructorImageFileName);
 
             // Insert
             if (entity.Id == 0)

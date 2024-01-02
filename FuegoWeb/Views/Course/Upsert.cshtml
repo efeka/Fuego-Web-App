@@ -1,58 +1,71 @@
-﻿@using Models
-@model Instructor
+﻿@using Models.ViewModels
+@model CourseVM
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-dark bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text center">
-                <h2 class="text-white py-2">Create Instructor</h2>
+                <h2 class="text-white py-2">@(Model.Course.Id != 0 ? "Update" : "Create") Course</h2>
             </div>
         </div>
     </div>
 </div>
 
 <form method="post" class="row" enctype="multipart/form-data">
-    <input asp-for="ImageUrl" hidden />
-    <!--div asp-validation-summary="All"></div-->
+    <input asp-for="Course.Id" hidden />
+    <input asp-for="Course.ImageUrl" hidden />
 
     <div class="form-floating py-2 col-12">
-        <input asp-for="Name" class="form-control border-o shadow" />
-        <label asp-for="Name" class="ms-2"></label>
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div class="form-floating py-2 col-12">
-        <input asp-for="Surname" class="form-control border-o shadow" />
-        <label asp-for="Surname" class="ms-2"></label>
-        <span asp-validation-for="Surname" class="text-danger"></span>
+        <input asp-for="Course.Title" class="form-control border-o shadow" />
+        <label asp-for="Course.Title" class="ms-2"></label>
+        <span asp-validation-for="Course.Title" class="text-danger"></span>
     </div>
 
     <div class="py col-12">
-        <label asp-for="Description" class="ms-2 text-muted"></label>
-        <textarea asp-for="Description" class="form-control border-o shadow"></textarea>
+        <label asp-for="Course.Description" class="ms-2 text-muted"></label>
+        <textarea asp-for="Course.Description" class="form-control border-o shadow"></textarea>
         <span asp-vsalidation-for="Description" class="text-danger"></span>
     </div>
 
     <div class="form-floating py-2 col-12">
-        <input asp-for="LastPayment" class="form-control border-o shadow" />
-        <label asp-for="LastPayment" class="ms-2"></label>
-        <span asp-validation-for="LastPayment" class="text-danger"></span>
+        <select asp-for="Course.InstructorId" asp-items="@Model.Instructors" class="form-select border-o shadow">
+            <option disabled selected>--Select Instructor--</option>
+        </select>
+        <label asp-for="Course.InstructorId" class="ms-2">Instructor</label>
+        <span asp-validation-for="Course.InstructorId" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <select asp-for="Course.CourseTypeId" asp-items="@Model.CourseTypes" class="form-select border-o shadow">
+            <option disabled selected>--Select Course Type--</option>
+        </select>
+        <label asp-for="Course.CourseTypeId" class="ms-2">Course Type</label>
+        <span asp-validation-for="Course.CourseTypeId" class="text-danger"></span>
     </div>
 
     <div class="form-floating py-2 col-12">
         <input type="file" name="file" class="form-control border-o shadow" />
-        <label asp-for="ImageUrl" class="ms-2"></label>
+        <label asp-for="Course.ImageUrl" class="ms-2"></label>
     </div>
 
     <div class="row">
         <div class="col-6 col-md-3">
-            <button type="submit" class="btn btn-primary form-control">Create</button>
+            <button type="submit" class="btn btn-primary form-control">
+                @(Model.Course.Id != 0 ? "Update" : "Create")
+            </button>
         </div>
         <div class="col-6 col-md-3">
-            <a asp-controller="Instructor" asp-action="Index" class="btn btn-outline-secondary border form-control">
+            <a asp-controller="Course" asp-action="Index" class="btn btn-outline-secondary border form-control">
                 <i class="bi bi-caret-left"></i> Back to List
             </a>
         </div>
+    </div>
+
+    <div>
+        @if (@Model.Course.Id != 0)
+        {
+            <img src="@Model.Course.ImageUrl" width="100" />
+        }
     </div>
 </form>
 
