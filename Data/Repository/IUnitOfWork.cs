@@ -7,5 +7,6 @@ namespace Data.Repository
         Task SaveChangesAsync();
         IRepository<Instructor> Instructor { get; }
         IRepository<CourseType> CourseType { get; }
+        IRepository<Course> Course { get; }
     }
 }
