@@ -1,0 +1,39 @@
+﻿.instructor-info {
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.instructor-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin-right: 5px;
+    display: block;
+}
+
+.instructor-name
+{
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.course-image {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.course-title {
+    width: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+    background: lightblue;
+}
+
+.course-desc {
+    background: lightpink;
+}

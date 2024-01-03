@@ -105,6 +105,34 @@ namespace FuegoWeb.Controllers
             return instructorList;
         }
 
+        #region User Views
+
+        public async Task<IActionResult> PublicIndex()
+        {
+            IEnumerable<Course> courses = await _courseService.GetAllAsync(
+                includeProperties: "Instructor,CourseType"
+            );
+            return View("PublicIndex", courses);
+        }
+
+        public async Task<IActionResult> Details(int courseId)
+        {
+            Course? courseFromDb = await _courseService.GetAsync(
+                u => u.Id == courseId,
+                includeProperties: "Instructor,CourseType"
+            );
+            if (courseFromDb == null)
+            {
+                return View("Error", new ErrorViewModel()
+                {
+                    ErrorMessage = $"Failed to retrieve details for the course with id {courseId}"
+                });
+            }
+            return View("Details", courseFromDb);
+        }
+
+        #endregion
+
         #region API Calls
 
         [HttpGet]
