@@ -9,51 +9,53 @@
     </head>
     <body>
         <form method="post">
-        <div class="card shadow border-0 mt-4 mb-4">
-            <div class="card-header bg-secondary bg-gradient text-light py-4">
+            <div class="border">
+                <div class="card shadow border-0 mt-4 mb-4">
+                    <div class="card-header bg-secondary bg-gradient text-light py-4">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h3 class="text-white text-uppercase">@Model.Title</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-12 text-center">
-                        <h3 class="text-white text-uppercase">@Model.Title</h3>
+                    <div class="col-6 col-md-2 offset-lg-1 pb-1">
+                        <a asp-action="PublicIndex" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                            <small>Back to Courses</small>
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="py-3">
-                    <div class="row">
-                        <div class="col-6 col-md-2 offset-lg-1 pb-1">
-                            <a asp-action="PublicIndex" class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
-                                <small>Back to Courses</small>
-                            </a>
-                        </div>
+                <div>
+                    <div class="instructor-info">
+                        <img class="instructor-image" src="@Model.Instructor.ImageUrl" />
+                        <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id">
+                            @Model.Instructor.Name @Model.Instructor.Surname
+                        </a>
                     </div>
-                    <div class="row">
-                        <div class="instructor-info">
-                            <img class="instructor-image" src="@Model.Instructor.ImageUrl" />
-                            <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id">
-                                @Model.Instructor.Name @Model.Instructor.Surname
-                            </a>
-                        </div>
+                </div>
 
-                        <div class="info-container">
-                            <div>
-                                <div class="course-title">@Model.Title</div>
-                                <div class="course-desc">@Model.Description</div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6 offset-lg-1">
-                            <div class="row">
-                                <div class="col-12 col-md-6 pb-1">
-                                    <button type="submit" disabled class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
-                                        Submit Attendence
-                                    </button>
-                                </div>
+                <div class="border mx-3 my-3">
+                    <h2 class="details-title">Course Details</h2>
+
+                    <div class="course-info">
+                        <div class="wrapper">
+                            <img src="@Model.ImageUrl" />
+                            <div class="text-box">
+                            <h4 class="course-title">@Model.Title &nbsp</h4>
+                                <h4 class="course-type">@Model.CourseType.Type</h4>
+
+                                <p>@Model.Description</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <button type="submit" disabled class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
+                    Submit Attendence
+                </button>
             </div>
-        </div>
-    </form>
+        </form>
     </body>
 </html>
 
