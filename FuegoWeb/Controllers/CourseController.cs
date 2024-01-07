@@ -56,7 +56,7 @@ namespace FuegoWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Upsert(CourseVM courseVM, IFormFile? file)
+        public async Task<ActionResult> Upsert(CourseVM courseVM, IFormFile? file, List<DayOfWeek> selectedDays)
         {
             try
             {
@@ -66,6 +66,10 @@ namespace FuegoWeb.Controllers
                     courseVM.Instructors = await GetInstructorList();
                     return View(courseVM);
                 }
+
+                foreach (var day in selectedDays)
+                    if (!courseVM.Course.DaysOfWeek.Contains(day))
+                        courseVM.Course.DaysOfWeek.Add(day);
 
                 await _courseService.UpsertAsync(courseVM.Course, file);
                 TempData["success"] = courseVM.Course.Id == 0 ? "Course created successfully" : "Course updated successfully";

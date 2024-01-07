@@ -27,5 +27,8 @@ namespace Models
 
         [ValidateNever]
         public string ImageUrl { get; set; } = string.Empty;
+
+        [Required]
+        public List<DayOfWeek> DaysOfWeek { get; set; } = new();
     }
 }
