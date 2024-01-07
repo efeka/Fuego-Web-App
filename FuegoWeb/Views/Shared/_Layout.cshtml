@@ -24,9 +24,22 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Course" asp-action="PublicIndex">Courses</a>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Courses
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="PublicIndex">All Courses</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="PublicIndex">My Courses</a>
+                                </li>
+                            </ul>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
@@ -39,13 +52,13 @@
                                 <li class="nav-item">
                                     <a class="dropdown-item" asp-area="" asp-controller="Instructor" asp-action="Index">Instructors</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="CourseType" asp-action="Index">Course Types</a>
-                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li class="nav-item">
                                     <a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="Index">Courses</a>
                                 </li>
-                                <!--li><hr class="dropdown-divider"></li-->
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="" asp-controller="CourseType" asp-action="Index">Course Types</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
