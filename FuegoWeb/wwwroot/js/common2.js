@@ -1,5 +1,4 @@
 function Delete(url) {
-    window.alert("za");
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
