@@ -1,4 +1,5 @@
 function Delete(url) {
+    window.alert("za");
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -13,8 +14,6 @@ function Delete(url) {
                 url: url,
                 type: 'DELETE',
                 success: function (data) {
-                    toastr.success(data.message);
-
                     // Table rows have the same id as the data in them, with a "row_" prefix
                     // This is used for deleting the row directly from here to avoid having to refresh the page
                     var deletedRow = document.getElementById('row_' + data.deletedId);
