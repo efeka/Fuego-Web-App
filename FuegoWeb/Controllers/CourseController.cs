@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
 using Models.ViewModels;
 using Services;
+using Utility;
 
 namespace FuegoWeb.Controllers
 {
@@ -71,8 +72,18 @@ namespace FuegoWeb.Controllers
                     if (!courseVM.Course.DaysOfWeek.Contains(day))
                         courseVM.Course.DaysOfWeek.Add(day);
 
+                if (!ImageHandler.IsImageFileValid(file))
+                {
+                    TempData["error"] = "Invalid image file.";
+                    courseVM.CourseTypes = await GetCourseTypeList();
+                    courseVM.Instructors = await GetInstructorList();
+                    return View(courseVM);
+                }
+
                 await _courseService.UpsertAsync(courseVM.Course, file);
-                TempData["success"] = courseVM.Course.Id == 0 ? "Course created successfully" : "Course updated successfully";
+                TempData["success"] = courseVM.Course.Id == 0 ?
+                    "Course created successfully" :
+                    "Course updated successfully";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

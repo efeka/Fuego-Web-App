@@ -82,6 +82,25 @@ namespace Utility
             }
         }
 
+        /// <summary>
+        /// Checks if the given file is a valid image file. 
+        /// Null is considered valid.
+        /// </summary>
+        /// <param name="file">The file to be checked.</param>
+        /// <param name="validExtensions">The valid extensions for an image file (".png", ".jpg" etc.)</param>
+        /// <returns>Returns true if the file is valid, false otherwise.</returns>
+        public static bool IsImageFileValid(IFormFile? file, string[]? validExtensions = null)
+        {
+            if (file == null)
+                return true;
+
+            if (validExtensions == null)
+                validExtensions = [".png", ".jpg", ".jpeg"];
+
+            var fileExtension = Path.GetExtension(file.FileName).ToLower();
+            return validExtensions.Contains(fileExtension);
+        }
+
         private string FormatPath(string path)
         {
             return path.TrimStart('~', '/').Replace("/", Path.DirectorySeparatorChar.ToString()).TrimStart('\\');

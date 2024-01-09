@@ -3,6 +3,7 @@ using FuegoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
+using Utility;
 
 namespace FuegoWeb.Controllers
 {
@@ -31,6 +32,12 @@ namespace FuegoWeb.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
+
+            if (!ImageHandler.IsImageFileValid(file))
+            {
+                TempData["error"] = "Invalid image file.";
+                return View();
+            }
 
             try
             {
@@ -71,11 +78,17 @@ namespace FuegoWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Instructor instructor, IFormFile? file)
         {
+            if (!ModelState.IsValid)
+                return View();
+
+            if (!ImageHandler.IsImageFileValid(file))
+            {
+                TempData["error"] = "Invalid image file.";
+                return View();
+            }
+
             try
             {
-                if (!ModelState.IsValid)
-                    return View();
-
                 await _instructorService.UpsertAsync(instructor, file);
                 TempData["success"] = "Instructor edited successfully";
                 return RedirectToAction("Index");
