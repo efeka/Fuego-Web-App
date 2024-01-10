@@ -1,6 +1,7 @@
 using Data.Data;
 using Data.Repository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Services;
 using Utility;
@@ -13,11 +14,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(
     /*options => options.SignIn.RequireConfirmedAccount = true*/)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ImageHandler>();
 builder.Services.AddScoped<InstructorService>();
 builder.Services.AddScoped<CourseTypeService>();
