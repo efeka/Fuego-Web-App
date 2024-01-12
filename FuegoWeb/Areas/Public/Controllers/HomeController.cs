@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace FuegoWeb.Areas.Student.Controllers
 {
-    [Area("Student")]
+    [Area("Public")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

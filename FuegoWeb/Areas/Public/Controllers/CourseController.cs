@@ -5,18 +5,14 @@ using Services;
 
 namespace FuegoWeb.Areas.Student.Controllers
 {
-    [Area("Student")]
+    [Area("Public")]
     public class CourseController : Controller
     {
         private readonly CourseService _courseService;
-        private readonly CourseTypeService _courseTypeService;
-        private readonly InstructorService _instructorService;
 
-        public CourseController(CourseService courseService, CourseTypeService courseTypeService, InstructorService instructorService)
+        public CourseController(CourseService courseService)
         {
             _courseService = courseService;
-            _courseTypeService = courseTypeService;
-            _instructorService = instructorService;
         }
 
         public async Task<IActionResult> Index()
