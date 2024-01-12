@@ -1,5 +1,6 @@
 ﻿using Exceptions;
 using FuegoWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
@@ -10,6 +11,7 @@ using Utility;
 namespace FuegoWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = ApplicationRoles.Role_Admin)]
     public class CourseController : Controller
     {
         private readonly CourseService _courseService;
