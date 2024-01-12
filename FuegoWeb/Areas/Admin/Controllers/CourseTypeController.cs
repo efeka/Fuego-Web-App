@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 
-namespace FuegoWeb.Controllers
+namespace FuegoWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CourseTypeController : Controller
     {
         private readonly CourseTypeService _courseTypeService;

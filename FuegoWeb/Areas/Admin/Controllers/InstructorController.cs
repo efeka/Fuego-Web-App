@@ -5,8 +5,9 @@ using Models;
 using Services;
 using Utility;
 
-namespace FuegoWeb.Controllers
+namespace FuegoWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class InstructorController : Controller
     {
         private readonly InstructorService _instructorService;

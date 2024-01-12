@@ -2,8 +2,9 @@ using FuegoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace FuegoWeb.Controllers
+namespace FuegoWeb.Areas.Student.Controllers
 {
+    [Area("Student")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

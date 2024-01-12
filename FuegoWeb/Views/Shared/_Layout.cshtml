@@ -22,7 +22,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="Student" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
                         <li class="nav-item dropdown">
@@ -31,36 +31,39 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="PublicIndex">All Courses</a>
+                                    <a class="dropdown-item" asp-area="Student" asp-controller="Course" asp-action="Index">All Courses</a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="PublicIndex">My Courses</a>
+                                    <a class="dropdown-item" asp-area="Student" asp-controller="Course" asp-action="Index">My Courses</a>
                                 </li>
                             </ul>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="Student" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        <li class="nav-item dropdown">
+                        @if(User.IsInRole(ApplicationRoles.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Content Management
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Instructor" asp-action="Index">Instructors</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Instructor" asp-action="Index">Instructors</a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="Index">Courses</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Courses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="" asp-controller="CourseType" asp-action="Index">Course Types</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="CourseType" asp-action="Index">Course Types</a>
                                 </li>
                             </ul>
                         </li>
+                        }
                     </ul>
 
                     <partial name="_LoginPartial" />
@@ -77,7 +80,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - FuegoWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - FuegoWeb - <a asp-area="Student" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

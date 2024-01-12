@@ -1,0 +1,67 @@
+﻿@using Models
+@model Course
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="~/css/courseDetails.css" />
+        <title>Course Details</title>
+    </head>
+    <body>
+        <form method="post">
+            <div class="course-header">
+                <a asp-action="Index" class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase">
+                    <small>Back to Courses</small>
+                </a>
+                <div class="instructor-info">
+                    <img class="instructor-image" src="@Model.Instructor.ImageUrl" />
+                    <a class="instructor-name" asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id">
+                        <p>@Model.Instructor.Name @Model.Instructor.Surname</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="wrapper">
+                <div class="course-container">
+                    <img class="course-image" src="@Model.ImageUrl" />
+                    <div class="course-info">
+                        <h4 class="course-title">@Model.Title &nbsp</h4>
+                        <h4 class="course-type">@Model.CourseType.Type</h4>
+                        <p class="course-desc">@Html.Raw(@Model.Description)</p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div>
+
+                </div>
+            </div>
+
+            <!--
+            <div>
+
+            </div>
+
+                <h2 class="details-title">Course Details</h2>
+            <div class="border course-container my-3 mx-3">
+
+                <div>
+                    <img class="course-image" src="@Model.ImageUrl" />
+                </div>
+                        
+                <div>
+                    <h4 class="course-title">@Model.Title &nbsp</h4>
+                    <h4 class="course-type">@Model.CourseType.Type</h4>
+                    <p class="course-desc">@Model.Description</p>
+                </div>
+
+            </div>
+            -->
+            <button type="submit" disabled class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
+                Submit Attendence
+            </button>
+        </form>
+    </body>
+</html>
+
