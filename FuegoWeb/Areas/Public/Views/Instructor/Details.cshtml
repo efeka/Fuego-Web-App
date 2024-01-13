@@ -1,0 +1,30 @@
+﻿@using Models
+@model Instructor
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="~/css/courseDetails.css" />
+        <title>Instructor Details</title>
+    </head>
+    <body>
+        <form method="post">
+            <div class="course-header">
+                <a asp-action="Index" class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase">
+                    <small>Back to Courses</small>
+                </a>
+            </div>
+
+            <div class="wrapper">
+                <div class="course-container">
+                    <img class="course-image" src="@Model.ImageUrl" />
+                    <div class="course-info">
+                        <h4 class="course-title">@Model.Name @Model.Surname</h4>
+                        <p class="course-desc">@Html.Raw(@Model.Description)</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
+

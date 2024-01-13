@@ -1,0 +1,47 @@
+﻿@using Models
+@model IEnumerable<Instructor>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Courses</title>
+    </head>
+    <body>
+        <div class="card shadow border-0 mt-4">
+            <div class="card-header bg-dark bg-gradient ml-0 py-3">
+                <div class="row">
+                    <div class="col-12 text center">
+                        <h2 class="text-white py-2">Our Instructors</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-3">
+            @foreach (var instructor in Model)
+            {
+                <div class="col-lg-3 col-sm-6">
+                    <div class="row p-2">
+                        <div class="col-12 p-1">
+                            <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                                <img src="@instructor.ImageUrl" class="card-img-top rounded" />
+                                <div class="card-body pb-0">
+                                    <div class="pl-1">
+                                        <p class="card-title h5 text-dark text-uppercase text-center">@instructor.Name @instructor.Surname</p>
+                                    </div>
+
+                                    <p class="card-title text-center mb-3">
+                                        @Html.Raw(@instructor.Description)
+                                    </p>
+                                </div>
+                                <a asp-area="Public" asp-action="Details" asp-route-instructorId="@instructor.Id" class="btn btn-primary bg-gradient border-0 form-control">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </body>
+</html>
