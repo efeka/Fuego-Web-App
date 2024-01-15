@@ -99,7 +99,7 @@ namespace FuegoWeb.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             // TODO Remove from production
-            public string? Role { get; set; }
+            public string Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
         }
@@ -110,7 +110,6 @@ namespace FuegoWeb.Areas.Identity.Pages.Account
             if (!_roleManager.RoleExistsAsync(ApplicationRoles.Role_Admin).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(ApplicationRoles.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(ApplicationRoles.Role_Guest)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(ApplicationRoles.Role_Student)).GetAwaiter().GetResult();
             }
 
@@ -148,7 +147,7 @@ namespace FuegoWeb.Areas.Identity.Pages.Account
                     if (!string.IsNullOrEmpty(Input.Role))
                         await _userManager.AddToRoleAsync(user, Input.Role);
                     else
-                        await _userManager.AddToRoleAsync(user, ApplicationRoles.Role_Guest);
+                        await _userManager.AddToRoleAsync(user, ApplicationRoles.Role_Student);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
