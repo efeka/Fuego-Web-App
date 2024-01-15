@@ -33,7 +33,7 @@
                     <td>@obj.Type</td>
                     <td>
                         <div class="d-flex justify-content-between">
-                            <a asp-asp-controller="CourseType" asp-action="Edit" asp-route-id="@obj.Id" class="w-75 btn btn-primary mx-2">
+                            <a asp-controller="CourseType" asp-action="Edit" asp-route-id="@obj.Id" class="w-75 btn btn-primary mx-2">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
                             <a onClick="Delete('coursetype/delete/@obj.Id')" class="w-75 btn btn-danger mx-2">
