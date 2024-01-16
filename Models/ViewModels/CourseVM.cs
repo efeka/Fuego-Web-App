@@ -5,12 +5,12 @@ namespace Models.ViewModels
 {
     public class CourseVM
     {
-        public Course Course { get; set; }
+        public Course Course { get; set; } = new();
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> CourseTypes { get; set; }
+        public IEnumerable<SelectListItem> CourseTypes { get; set; } = Enumerable.Empty<SelectListItem>();
 
         [ValidateNever]
-        public IEnumerable<SelectListItem> Instructors { get; set; }
+        public IEnumerable<SelectListItem> Instructors { get; set; } = Enumerable.Empty<SelectListItem>();
     }
 }

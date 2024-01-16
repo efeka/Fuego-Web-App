@@ -11,12 +11,12 @@ namespace Models
 
         [ValidateNever]
         [ForeignKey("CourseTypeId")]
-        public CourseType CourseType { get; set; }
+        public CourseType CourseType { get; set; } = new();
         public int CourseTypeId { get; set; }
 
         [ValidateNever]
         [ForeignKey("InstructorId")]
-        public Instructor Instructor { get; set; }
+        public Instructor Instructor { get; set; } = new();
         public int InstructorId { get; set; }
 
         [Required]
