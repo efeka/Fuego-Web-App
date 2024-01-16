@@ -1,6 +1,7 @@
 ﻿using FuegoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.ViewModels;
 using Services;
 
 namespace FuegoWeb.Areas.Public.Controllers
@@ -9,16 +10,30 @@ namespace FuegoWeb.Areas.Public.Controllers
     public class InstructorController : Controller
     {
         private readonly InstructorService _instructorService;
+        private readonly CourseService _courseService;
 
-        public InstructorController(InstructorService instructorService)
+        public InstructorController(InstructorService instructorService, CourseService courseService)
         {
             _instructorService = instructorService;
+            _courseService = courseService;
         }
 
         public async Task<IActionResult> Index()
         {
             IEnumerable<Instructor> instructors = await _instructorService.GetAllAsync();
-            return View(instructors);
+            List<InstructorVM> instructorVMs = new();
+
+            foreach (var instructor in instructors)
+            {
+                InstructorVM instructorVM = new()
+                {
+                    Instructor = instructor,
+                    Courses = await _courseService.GetAllByInstructorIdAsync(instructor.Id, includeProperties: "CourseType")
+                };
+                instructorVMs.Add(instructorVM);
+            }
+
+            return View(instructorVMs);
         }
 
         public async Task<IActionResult> Details(int instructorId)

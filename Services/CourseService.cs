@@ -41,6 +41,11 @@ namespace Services
             return await _unitOfWork.Course.GetAsync(filter, includeProperties);
         }
 
+        public async Task<IEnumerable<Course>> GetAllByInstructorIdAsync(int id, string? includeProperties = null)
+        {
+            return (await _unitOfWork.Course.GetAllAsync(includeProperties)).Where(u => u.InstructorId == id);
+        }
+
         public async Task AddAsync(Course entity)
         {
             await UpsertAsync(entity, null);

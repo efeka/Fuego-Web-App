@@ -1,5 +1,5 @@
-﻿@using Models
-@model IEnumerable<Instructor>
+﻿@using Models.ViewModels
+@model List<InstructorVM>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,18 +17,37 @@
                 </div>
             </div>
         </div-->
-        <h1 class="title">Our Instructors</h1>
+        <h1 class="header">Our Instructors</h1>
 
         <div class="container">
             @foreach (var instructor in Model)
             {
-                <div class="instructor">
-                    <a asp-area="Public" asp-action="Details" asp-route-instructorId="@instructor.Id" class="image-wrapper">
-                        <img class="image" src="@instructor.ImageUrl" />
-                    </a>
-                    <p class="name">@instructor.Name @instructor.Surname</p>
-                    <p class="courses">Hip-Hop / Keke</p>
-                </div>
+                <a asp-area="Public" asp-action="Details" asp-route-instructorId="@instructor.Instructor.Id" class="instructor">
+                    <div class="image-wrapper">
+                        <img class="image" src="@instructor.Instructor.ImageUrl" />
+                    </div>
+                    <p class="name">@instructor.Instructor.Name @instructor.Instructor.Surname</p>
+
+                    <div class="courses">
+                        @{
+                            var separator = "";
+                            var uniqueCourseTypes = instructor.Courses.Select(course => course.CourseType.Type).Distinct();
+                        }
+                        @if (uniqueCourseTypes.Any())
+                        {
+                            @foreach (var courseType in uniqueCourseTypes)
+                            {
+                                <span style="color: white;">@separator</span>
+                                @courseType
+                                separator = " | ";
+                            }
+                        }
+                        else
+                        {
+                            @:-
+                        }
+                    </div>
+                </a>
             }
         </div>
     </body>
