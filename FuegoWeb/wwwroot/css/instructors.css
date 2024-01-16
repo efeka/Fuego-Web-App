@@ -1,0 +1,79 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(31, 31, 31);
+}
+
+.title {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-family: Calibri;
+    letter-spacing: 5px;
+    font-size: 3rem;
+    width: 100%;
+    outline: none;
+
+    color: #FFF;
+    --shadow-color: #ff0000;
+    text-shadow: 0 0 10px var(--shadow-color),
+        0 0 20px var(--shadow-color),
+        0 0 40px var(--shadow-color),
+        0 0 80px var(--shadow-color),
+        0 0 160px var(--shadow-color);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.instructor {
+    margin: 30px;
+    cursor: pointer;
+}
+
+.image-wrapper {
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 125px;
+}
+
+.image {
+    width: 250px;
+    height: 250px;
+
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.image:hover {
+    transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    -moz-transform: scale(1.3);
+    -webkit-transform: scale(1.3);
+    -o-transform: scale(1.3);
+}
+
+.courses, 
+.name {
+    color: white;
+    text-align: center;
+    font-family: Calibri;
+}
+
+.name {
+    font-size: 1.6rem;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.courses {
+    font-size: 1.1rem;
+    color: orange;
+}
