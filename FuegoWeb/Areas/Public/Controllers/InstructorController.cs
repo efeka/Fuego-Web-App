@@ -32,15 +32,12 @@ namespace FuegoWeb.Areas.Public.Controllers
                 };
                 instructorVMs.Add(instructorVM);
             }
-
             return View(instructorVMs);
         }
 
         public async Task<IActionResult> Details(int instructorId)
         {
-            Instructor? instructorFromDb = await _instructorService.GetAsync(
-                u => u.Id == instructorId
-            );
+            Instructor? instructorFromDb = await _instructorService.GetAsync(u => u.Id == instructorId);
             if (instructorFromDb == null)
             {
                 return View("Error", new ErrorViewModel()
@@ -48,7 +45,13 @@ namespace FuegoWeb.Areas.Public.Controllers
                     ErrorMessage = $"Failed to retrieve details for the instructor with id {instructorId}"
                 });
             }
-            return View("Details", instructorFromDb);
+
+            InstructorVM instructorVM = new()
+            {
+                Instructor = instructorFromDb,
+                Courses = await _courseService.GetAllByInstructorIdAsync(instructorFromDb.Id, includeProperties: "CourseType")
+            };
+            return View("Details", instructorVM);
         }
 
     }

@@ -1,5 +1,5 @@
-﻿@using Models
-@model Instructor
+﻿@using Models.ViewModels
+@model InstructorVM
 
 <!DOCTYPE html>
 <html>
@@ -11,16 +11,24 @@
         <form method="post">
             <div class="course-header">
                 <a asp-action="Index" class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase">
-                    <small>Back to Courses</small>
+                    <small>Back to Instructors</small>
                 </a>
             </div>
 
             <div class="wrapper">
                 <div class="course-container">
-                    <img class="course-image" src="@Model.ImageUrl" />
+                    <img class="course-image" src="@Model.Instructor.ImageUrl" />
                     <div class="course-info">
-                        <h4 class="course-title">@Model.Name @Model.Surname</h4>
-                        <p class="course-desc">@Html.Raw(@Model.Description)</p>
+                        <h4 class="course-title">@Model.Instructor.Name @Model.Instructor.Surname</h4>
+
+                        @foreach (var course in Model.Courses)
+                        {
+                            <a asp-controller="Course" asp-action="Details" asp-route-courseId="@course.Id" class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase">
+                                <small>@course.Title</small>
+                            </a>
+                        }
+
+                        <p class="course-desc">@Html.Raw(@Model.Instructor.Description)</p>
                     </div>
                 </div>
             </div>
