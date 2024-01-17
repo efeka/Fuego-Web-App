@@ -38,6 +38,11 @@ namespace Services
             return userList;
         }
 
+        public ApplicationUser? Get(string id)
+        {
+            return _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+        }
+
         public void DeleteAsync(string id)
         {
             ApplicationUser? appUser = _db.ApplicationUsers.Where(u => u.Id == id).FirstOrDefault();

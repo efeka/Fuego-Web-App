@@ -8,10 +8,14 @@ namespace Services
     public class CourseStudentService : IGenericService<CourseStudent>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly CourseService _courseService;
+        private readonly ApplicationUserService _appUserService;
 
-        public CourseStudentService(IUnitOfWork unitOfWork)
+        public CourseStudentService(IUnitOfWork unitOfWork, CourseService courseService, ApplicationUserService appUserService)
         {
             _unitOfWork = unitOfWork;
+            _courseService = courseService;
+            _appUserService = appUserService;
         }
 
         public async Task<IEnumerable<CourseStudent>> GetAllAsync(string? includeProperties = null)
@@ -26,23 +30,48 @@ namespace Services
 
         public async Task AddAsync(CourseStudent entity)
         {
-            _unitOfWork.CourseStudent.Add(entity);
-            await _unitOfWork.SaveChangesAsync();
+            await UpsertAsync(entity);
         }
 
         public async Task UpdateAsync(CourseStudent entity)
         {
-            CourseStudent? csFromDb = await _unitOfWork.CourseStudent.GetAsync(u => u.Id == entity.Id);
-            if (csFromDb == null)
-                throw new EntityNotFoundException(entity.Id);
+            await UpsertAsync(entity);
+        }
 
-            _unitOfWork.CourseStudent.Update(entity);
-            await _unitOfWork.SaveChangesAsync();
+        public async Task UpsertAsync(CourseStudent entity)
+        {
+            Course? course = await _courseService.GetAsync(u => u.Id == entity.CourseId);
+            if (course == null)
+                throw new EntityNotFoundException($"Could not find Course with ID {entity.CourseId}");
+
+            ApplicationUser? appUser = _appUserService.Get(entity.ApplicationUserId);
+            if (appUser == null)
+                throw new EntityNotFoundException($"Could not find User with ID {entity.ApplicationUserId}");
+
+            entity.Course = course;
+            entity.ApplicationUser = appUser;
+
+            // Insert
+            if (entity.Id == 0)
+            {
+                _unitOfWork.CourseStudent.Add(entity);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            // Update
+            else
+            {
+                CourseStudent? csFromDb = await _unitOfWork.CourseStudent.GetAsync(u => u.Id == entity.Id);
+                if (csFromDb == null)
+                    throw new EntityNotFoundException(entity.Id);
+
+                _unitOfWork.CourseStudent.Update(entity);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            CourseStudent? csFromDb = await _unitOfWork.CourseStudent.GetAsync(u => u.Id == entity.Id);
+            CourseStudent? csFromDb = await _unitOfWork.CourseStudent.GetAsync(u => u.Id == id);
             if (csFromDb == null)
                 throw new EntityNotFoundException(id);
 

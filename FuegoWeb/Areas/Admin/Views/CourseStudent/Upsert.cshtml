@@ -1,0 +1,49 @@
+﻿@using Models.ViewModels
+@model CourseStudentVM
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-dark bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text center">
+                <h2 class="text-white py-2">@(Model.CourseStudent.Id != 0 ? "Update" : "Create") Course-Student</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" class="row">
+    <input asp-for="CourseStudent.Id" hidden />
+
+    <div class="form-floating py-2 col-12">
+        <select asp-for="CourseStudent.CourseId" asp-items="@Model.Courses" class="form-select border-o shadow">
+            <option disabled selected>--Select Course--</option>
+        </select>
+        <label asp-for="CourseStudent.CourseId" class="ms-2">Course</label>
+        <span asp-validation-for="CourseStudent.CourseId" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <select asp-for="CourseStudent.ApplicationUserId" asp-items="@Model.ApplicationUsers" class="form-select border-o shadow">
+            <option disabled selected>--Select Student--</option>
+        </select>
+        <label asp-for="CourseStudent.ApplicationUserId" class="ms-2">Student</label>
+        <span asp-validation-for="CourseStudent.ApplicationUserId" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <button type="submit" class="btn btn-primary form-control">
+                @(Model.CourseStudent.Id != 0 ? "Update" : "Create")
+            </button>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="CourseStudent" asp-action="Index" class="btn btn-outline-secondary border form-control">
+                <i class="bi bi-caret-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

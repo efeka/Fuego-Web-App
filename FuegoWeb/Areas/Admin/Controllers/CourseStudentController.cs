@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FuegoWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
@@ -28,23 +29,65 @@ namespace FuegoWeb.Areas.Admin.Controllers
             IEnumerable<CourseStudent> courseStudents = await _csService.GetAllAsync(
                 includeProperties: "Course,ApplicationUser"
             );
+            return View(courseStudents);
+        }
 
-            List<CourseStudentVM> courseStudentVMs = new();
-            IEnumerable<SelectListItem> courseSelectList = await GetCoursesSelectListAsync();
-            IEnumerable<SelectListItem> userSelectList = GetAppUsersSelectListAsync();
+        public async Task<IActionResult> Upsert(int? id)
+        {
+            CourseStudent? courseStudent;
 
-            foreach (var courseStudent in courseStudents)
+            // Insert
+            if (id == null || id == 0)
             {
-                CourseStudentVM courseStudentVM = new()
-                {
-                    CourseStudent = courseStudent,
-                    Courses = courseSelectList,
-                    ApplicationUsers = userSelectList
-                };
-                courseStudentVMs.Add(courseStudentVM);
+                courseStudent = new();
+            }
+            // Update
+            else
+            {
+                courseStudent = await _csService.GetAsync(u => u.Id == id);
+                if (courseStudent == null)
+                    return View("Error", new ErrorViewModel()
+                    {
+                        ErrorMessage = "Failed to retrieve CourseStudent for update"
+                    });
             }
 
-            return View(courseStudentVMs);
+            CourseStudentVM csVM = new()
+            {
+                CourseStudent = courseStudent,
+                Courses = await GetCoursesSelectListAsync(),
+                ApplicationUsers = GetAppUsersSelectListAsync()
+            };
+            return View(csVM);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Upsert(CourseStudentVM csVM)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    csVM.Courses = await GetCoursesSelectListAsync();
+                    csVM.ApplicationUsers = GetAppUsersSelectListAsync();
+                    return View(csVM);
+                }
+
+                await _csService.UpsertAsync(csVM.CourseStudent);
+
+                TempData["success"] = csVM.CourseStudent.Id == 0 ?
+                    "Course-Student created successfully" :
+                    "Course-Student updated successfully";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return View("Error", new ErrorViewModel()
+                {
+                    ErrorMessage = "Failed to upsert CourseStudent"
+                });
+            }
         }
 
         private async Task<IEnumerable<SelectListItem>> GetCoursesSelectListAsync()
