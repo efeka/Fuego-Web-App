@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Models.ViewModels
 {
@@ -7,9 +8,9 @@ namespace Models.ViewModels
         public CourseStudent CourseStudent { get; set; } = new();
 
         [ValidateNever]
-        public Course Course { get; set; } = new();
+        public IEnumerable<SelectListItem> Courses { get; set; } = Enumerable.Empty<SelectListItem>();
 
         [ValidateNever]
-        public ApplicationUser? ApplicationUser { get; set; }
+        public IEnumerable<SelectListItem> ApplicationUsers { get; set; } = Enumerable.Empty<SelectListItem>();
     }
 }

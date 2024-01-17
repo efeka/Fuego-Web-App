@@ -1,0 +1,52 @@
+﻿@using Models
+@model List<ApplicationUser>
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-dark bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text center">
+                <h2 class="text-white py-2">User List</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body p-4">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr id="row_@obj.Id">
+                    <td>@obj.Name</td>
+                    <td>@obj.Surname</td>
+                    <td>@obj.Email</td>
+                    <td>@obj.RoleName</td>
+                    <td>
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="User" asp-action="Edit" asp-route-id="@obj.Id" class="w-75 btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a>
+
+                            </a>
+                            <a onClick="Delete('applicationuser/delete/@obj.Id')" class="w-75 btn btn-danger mx-2">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script src="~/js/common2.js" defer></script>
+}
