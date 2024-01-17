@@ -53,8 +53,8 @@ namespace FuegoWeb.Areas.Admin.Controllers
             CourseVM courseVM = new()
             {
                 Course = course,
-                Instructors = await GetInstructorList(),
-                CourseTypes = await GetCourseTypeList()
+                Instructors = await GetInstructorListAsync(),
+                CourseTypes = await GetCourseTypeListAsync()
             };
             return View(courseVM);
         }
@@ -66,8 +66,8 @@ namespace FuegoWeb.Areas.Admin.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    courseVM.CourseTypes = await GetCourseTypeList();
-                    courseVM.Instructors = await GetInstructorList();
+                    courseVM.CourseTypes = await GetCourseTypeListAsync();
+                    courseVM.Instructors = await GetInstructorListAsync();
                     return View(courseVM);
                 }
 
@@ -78,8 +78,8 @@ namespace FuegoWeb.Areas.Admin.Controllers
                 if (!ImageHandler.IsImageFileValid(file))
                 {
                     TempData["error"] = "Invalid image file.";
-                    courseVM.CourseTypes = await GetCourseTypeList();
-                    courseVM.Instructors = await GetInstructorList();
+                    courseVM.CourseTypes = await GetCourseTypeListAsync();
+                    courseVM.Instructors = await GetInstructorListAsync();
                     return View(courseVM);
                 }
 
@@ -99,7 +99,7 @@ namespace FuegoWeb.Areas.Admin.Controllers
             }
         }
 
-        private async Task<IEnumerable<SelectListItem>> GetCourseTypeList()
+        private async Task<IEnumerable<SelectListItem>> GetCourseTypeListAsync()
         {
             IEnumerable<SelectListItem> courseTypeList =
                 (await _courseTypeService.GetAllAsync())
@@ -111,7 +111,7 @@ namespace FuegoWeb.Areas.Admin.Controllers
             return courseTypeList;
         }
 
-        private async Task<IEnumerable<SelectListItem>> GetInstructorList()
+        private async Task<IEnumerable<SelectListItem>> GetInstructorListAsync()
         {
             IEnumerable<SelectListItem> instructorList =
                 (await _instructorService.GetAllAsync())
