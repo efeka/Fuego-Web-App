@@ -29,12 +29,13 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    column-gap: 80px;
 }
 
 .instructor {
-    margin: 30px;
     cursor: pointer;
     text-decoration: none;
+    margin-top: 50px;
 }
 
 .image-wrapper {
@@ -44,8 +45,8 @@ body {
 }
 
 .image {
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 300px;
 
     -webkit-transform: scale(1);
     transform: scale(1);

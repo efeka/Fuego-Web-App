@@ -27,10 +27,16 @@
         <span asp-validation-for="Surname" class="text-danger"></span>
     </div>
 
-    <div class="py col-12">
-        <label asp-for="Description" class="ms-2 text-muted"></label>
-        <textarea asp-for="Description" class="form-control border-o shadow"></textarea>
+    <div class="form-floating py-2 col-12">
+        <input asp-for="Description" class="form-control border-o shadow" />
+        <label asp-for="Description" class="ms-2"></label>
         <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <input asp-for="InstagramLink" class="form-control border-o shadow" />
+        <label asp-for="InstagramLink" class="ms-2"></label>
+        <span asp-validation-for="InstagramLink" class="text-danger"></span>
     </div>
 
     <div class="form-floating py-2 col-12">

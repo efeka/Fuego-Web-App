@@ -19,7 +19,10 @@
                 <div class="course-container">
                     <img class="course-image" src="@Model.Instructor.ImageUrl" />
                     <div class="course-info">
-                        <h4 class="course-title">@Model.Instructor.Name @Model.Instructor.Surname</h4>
+                        <a href="@Model.Instructor.InstagramLink">
+                            <img src="~/images/common/instagram_logo.png" style="width: 30px; height: 30px; display: inline-block;"/>
+                        </a>
+                        <h4 class="course-title" style="display: inline-block;">@Model.Instructor.Name @Model.Instructor.Surname</h4>
 
                         @foreach (var course in Model.Courses)
                         {

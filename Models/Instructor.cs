@@ -18,6 +18,9 @@ namespace Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
+        [Url]
+        public string InstagramLink { get; set; } = string.Empty;
+
         [DisplayName("Last Payment Date")]
         public DateTime? LastPayment { get; set; }
 
