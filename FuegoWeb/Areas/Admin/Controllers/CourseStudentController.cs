@@ -1,4 +1,5 @@
-﻿using FuegoWeb.Models;
+﻿using Exceptions;
+using FuegoWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -113,5 +114,27 @@ namespace FuegoWeb.Areas.Admin.Controllers
                 });
             return userList;
         }
+
+        #region API Calls
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _csService.DeleteAsync(id);
+                return Json(new { success = true, message = $"CourseStudent deleted successfully", deletedId = id });
+            }
+            catch (EntityNotFoundException)
+            {
+                return Json(new { success = false, message = $"Could not find CourseStudent with id {id}" });
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = $"Could not delete CourseStudent with id {id}" });
+            }
+        }
+
+        #endregion
     }
 }
