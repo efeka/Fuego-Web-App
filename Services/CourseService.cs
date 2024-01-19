@@ -11,15 +11,20 @@ namespace Services
     public class CourseService : IGenericService<Course>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly InstructorService _instructorService;
+        private readonly CourseTypeService _courseTypeService;
         private readonly ImageHandler _imageHandler;
 
         private readonly string _courseImagesDir;
         private readonly string _defaultImageFileName;
         private readonly string _defaultImagePath;
 
-        public CourseService(IConfiguration config, IUnitOfWork unitOfWork, ImageHandler imageHandler)
+        public CourseService(IConfiguration config, IUnitOfWork unitOfWork, InstructorService instructorService,
+            CourseTypeService courseTypeService, ImageHandler imageHandler)
         {
             _unitOfWork = unitOfWork;
+            _instructorService = instructorService;
+            _courseTypeService = courseTypeService;
             _imageHandler = imageHandler;
 
             _courseImagesDir = config["RelativeWWWImagePaths:CourseImagesDir"]
@@ -59,6 +64,23 @@ namespace Services
         public async Task UpsertAsync(Course entity, IFormFile? file)
         {
             string imageUrl = _imageHandler.GetNewOrDefaultImagePath(file, _courseImagesDir, _defaultImageFileName);
+
+            #region Include Instructor and CourseType entities
+
+            if (entity.InstructorId == 0 || entity.CourseTypeId == 0)
+                throw new EntityNotFoundException(entity.Instructor.Id);
+
+            Instructor? instructorFromDb = await _instructorService.GetAsync(u => u.Id == entity.InstructorId);
+            CourseType? courseTypeFromDb = await _courseTypeService.GetAsync(u => u.Id == entity.CourseTypeId);
+            if (instructorFromDb == null || courseTypeFromDb == null)
+                throw new EntityNotFoundException(entity.Instructor.Id);
+
+            entity.Instructor = instructorFromDb;
+            entity.InstructorId = instructorFromDb.Id;
+            entity.CourseType = courseTypeFromDb;
+            entity.CourseTypeId = courseTypeFromDb.Id;
+
+            #endregion
 
             // Insert
             if (entity.Id == 0)
