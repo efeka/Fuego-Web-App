@@ -42,7 +42,7 @@ namespace FuegoWeb.Areas.Admin.Controllers
             // Update
             else
             {
-                course = await _courseService.GetAsync(u => u.Id == id);
+                course = await _courseService.GetAsync(u => u.Id == id, "Schedules");
                 if (course == null)
                     return View("Error", new ErrorViewModel()
                     {
@@ -60,7 +60,7 @@ namespace FuegoWeb.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Upsert(CourseVM courseVM, IFormFile? file, List<DayOfWeek> selectedDays)
+        public async Task<ActionResult> Upsert(CourseVM courseVM, IFormFile? file)
         {
             try
             {
@@ -70,10 +70,6 @@ namespace FuegoWeb.Areas.Admin.Controllers
                     courseVM.Instructors = await GetInstructorListAsync();
                     return View(courseVM);
                 }
-
-                foreach (var day in selectedDays)
-                    if (!courseVM.Course.DaysOfWeek.Contains(day))
-                        courseVM.Course.DaysOfWeek.Add(day);
 
                 if (!ImageHandler.IsImageFileValid(file))
                 {

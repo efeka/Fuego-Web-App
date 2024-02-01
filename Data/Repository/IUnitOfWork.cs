@@ -9,5 +9,6 @@ namespace Data.Repository
         IRepository<CourseType> CourseType { get; }
         IRepository<Course> Course { get; }
         IRepository<CourseStudent> CourseStudent { get; }
+        IRepository<Schedule> Schedule { get; }
     }
 }

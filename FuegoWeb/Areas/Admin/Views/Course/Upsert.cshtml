@@ -44,23 +44,27 @@
     </div>
 
     <div class="form-floating py-2 col-12">
-        <div class="form-control border-o shadow">
-            @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
-            {
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="chk_@day" name="SelectedDays" value="@day" @(Model.Course.DaysOfWeek.Contains(day) ? "checked" : "")>
-                    <label class="form-check-label" for="chk_@day">@day</label>
-                </div>
-            }
-        </div>
-
-        <label asp-for="Course.DaysOfWeek" class="ms-2">Days of the week</label>
-        <span asp-validation-for="Course.DaysOfWeek" class="text-danger"></span>
-    </div>
-
-    <div class="form-floating py-2 col-12">
         <input type="file" name="file" class="form-control border-o shadow" />
         <label asp-for="Course.ImageUrl" class="ms-2"></label>
+    </div>
+
+    <!-- Schedule selection -->
+    <div id="schedulesContainer"></div>
+
+    <div>
+        <!-- Input fields for adding new schedules -->
+        <label for="selectedDay">Select Day of Week:</label>
+        <select id="selectedDay">
+            @foreach (var dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                <option value="@dayOfWeek">@dayOfWeek</option>
+            }
+        </select>
+
+        <label for="selectedHour">Select Hour:</label>
+        <input type="time" id="selectedHour" />
+
+        <button type="button" onclick="addSchedule(null, null)">Add Schedule</button>
     </div>
 
     <div class="row">
@@ -86,4 +90,92 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function addSchedule(selectedDay, selectedHour) {
+            if (selectedDay === null || selectedDay === undefined)
+                selectedDay = document.getElementById('selectedDay').value;
+            if (selectedHour === null || selectedHour === undefined)
+                selectedHour = document.getElementById('selectedHour').value;
+
+            var schedulesContainer = document.getElementById('schedulesContainer');
+            var newIndex = schedulesContainer.children.length;
+
+            // Create a new schedule div
+            var newScheduleDiv = document.createElement('div');
+            newScheduleDiv.className = 'scheduleDiv';
+
+            // Display the selected day and hour
+            var daySpan = document.createElement('span');
+            daySpan.innerHTML = selectedDay + ' ';
+            newScheduleDiv.appendChild(daySpan);
+
+            var hourSpan = document.createElement('span');
+            hourSpan.innerHTML = selectedHour;
+            newScheduleDiv.appendChild(hourSpan);
+
+            // Add a hidden input for model binding on the server
+            var hiddenInputDay = document.createElement('input');
+            hiddenInputDay.type = 'hidden';
+            hiddenInputDay.name = 'Course.Schedules[' + newIndex + '].DayOfWeek';
+            hiddenInputDay.value = selectedDay;
+            newScheduleDiv.appendChild(hiddenInputDay);
+
+            var hiddenInputHour = document.createElement('input');
+            hiddenInputHour.type = 'hidden';
+            hiddenInputHour.name = 'Course.Schedules[' + newIndex + '].Hour';
+            hiddenInputHour.value = selectedHour;
+            newScheduleDiv.appendChild(hiddenInputHour);
+
+            // Add a remove button
+            var removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.innerHTML = 'Remove Schedule';
+            removeButton.onclick = function () { removeSchedule(this); };
+            newScheduleDiv.appendChild(removeButton);
+
+            // Append the new schedule div to the container
+            schedulesContainer.appendChild(newScheduleDiv);
+        }
+
+        function removeSchedule(button) {
+            var scheduleDiv = button.parentElement;
+            var schedulesContainer = scheduleDiv.parentNode;
+
+            // Remove the schedule div
+            scheduleDiv.parentNode.removeChild(scheduleDiv);
+
+            // Update the indexing of hidden input fields
+            updateIndexing(schedulesContainer);
+        }
+
+        function updateIndexing(container) {
+            // Update the indexing of hidden input fields based on the current state
+            var scheduleDivs = container.getElementsByClassName('scheduleDiv');
+            for (var i = 0; i < scheduleDivs.length; i++) {
+                var dayInput = scheduleDivs[i].querySelector('input[name$="DayOfWeek"]');
+                var hourInput = scheduleDivs[i].querySelector('input[name$="Hour"]');
+
+                if (dayInput && hourInput) {
+                    dayInput.name = dayInput.name.replace(/\[\d+\]/, '[' + i + ']');
+                    hourInput.name = hourInput.name.replace(/\[\d+\]/, '[' + i + ']');
+                }
+            }
+        }
+    </script>
+
+    <script>
+        @if (Model.Course.Id != 0)
+        {
+            for (int i = 0; i < Model.Course.Schedules.Count; i++)
+            {
+                var schedule = Model.Course.Schedules[i];
+                var dayOfWeek = schedule.DayOfWeek;
+                var hour = schedule.Hour.ToString(@"hh\:mm");
+
+                // Call addSchedule function for each schedule
+                @:addSchedule('@dayOfWeek', '@hour');
+            }
+        }
+    </script>
 }

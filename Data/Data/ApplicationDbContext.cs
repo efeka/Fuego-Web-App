@@ -12,10 +12,21 @@ namespace Data.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<CourseStudent> CourseStudents { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Schedule>()
+                .HasOne(s => s.Course)
+                .WithMany(c => c.Schedules)
+                .HasForeignKey(s => s.CourseId);
         }
     }
 }

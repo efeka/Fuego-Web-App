@@ -11,6 +11,7 @@ namespace Data.Repository
         public IRepository<CourseType> CourseType { get; private set; }
         public IRepository<Course> Course { get; private set; }
         public IRepository<CourseStudent> CourseStudent { get; private set; }
+        public IRepository<Schedule> Schedule { get; set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -19,6 +20,7 @@ namespace Data.Repository
             CourseType = new Repository<CourseType>(db);
             Course = new Repository<Course>(db);
             CourseStudent = new Repository<CourseStudent>(db);
+            Schedule = new Repository<Schedule>(db);
         }
 
         public async Task SaveChangesAsync()

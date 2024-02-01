@@ -36,9 +36,9 @@ namespace Services
             _defaultImagePath = Path.Combine("\\", _courseImagesDir, _defaultImageFileName);
         }
 
-        public async Task<IEnumerable<Course>> GetAllAsync(string? includeProperties = null)
+        public async Task<IEnumerable<Course>> GetAllAsync(Expression<Func<Course, bool>>? filter = null, string? includeProperties = null)
         {
-            return await _unitOfWork.Course.GetAllAsync(includeProperties);
+            return await _unitOfWork.Course.GetAllAsync(filter, includeProperties);
         }
 
         public async Task<Course?> GetAsync(Expression<Func<Course, bool>> filter, string? includeProperties = null)
@@ -48,7 +48,7 @@ namespace Services
 
         public async Task<IEnumerable<Course>> GetAllByInstructorIdAsync(int id, string? includeProperties = null)
         {
-            return (await _unitOfWork.Course.GetAllAsync(includeProperties)).Where(u => u.InstructorId == id);
+            return (await _unitOfWork.Course.GetAllAsync(includeProperties: includeProperties)).Where(u => u.InstructorId == id);
         }
 
         public async Task AddAsync(Course entity)
@@ -67,13 +67,13 @@ namespace Services
 
             #region Include Instructor and CourseType entities
 
-            if (entity.InstructorId == 0 || entity.CourseTypeId == 0)
-                throw new EntityNotFoundException(entity.Instructor.Id);
-
             Instructor? instructorFromDb = await _instructorService.GetAsync(u => u.Id == entity.InstructorId);
+            if (entity.InstructorId == 0 || instructorFromDb == null)
+                throw new EntityNotFoundException(entity.InstructorId);
+
             CourseType? courseTypeFromDb = await _courseTypeService.GetAsync(u => u.Id == entity.CourseTypeId);
-            if (instructorFromDb == null || courseTypeFromDb == null)
-                throw new EntityNotFoundException(entity.Instructor.Id);
+            if (entity.CourseTypeId == 0 || courseTypeFromDb == null)
+                throw new EntityNotFoundException(entity.CourseTypeId);
 
             entity.Instructor = instructorFromDb;
             entity.InstructorId = instructorFromDb.Id;
@@ -104,6 +104,10 @@ namespace Services
                     if (file != null)
                         _imageHandler.SaveImage(file, imageUrl);
                 }
+
+                // Delete old schedule of this course before adding the new list
+                IEnumerable<Schedule> oldSchedulesFromDb = await _unitOfWork.Schedule.GetAllAsync(u => u.CourseId == entity.Id);
+                _unitOfWork.Schedule.DeleteRange(oldSchedulesFromDb);
 
                 _unitOfWork.Course.Update(entity);
                 await _unitOfWork.SaveChangesAsync();

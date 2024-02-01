@@ -4,6 +4,7 @@ using Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240201132333_RemovedCourseSchedulesTable")]
+    partial class RemovedCourseSchedulesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,6 +243,10 @@ namespace Data.Migrations
                     b.Property<int>("CourseTypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("DaysOfWeek")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -339,30 +346,6 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Instructors");
-                });
-
-            modelBuilder.Entity("Models.Schedule", b =>
-                {
-                    b.Property<int>("ScheduleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("Hour")
-                        .HasColumnType("time");
-
-                    b.HasKey("ScheduleId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("Models.ApplicationUser", b =>
@@ -467,22 +450,6 @@ namespace Data.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("Models.Schedule", b =>
-                {
-                    b.HasOne("Models.Course", "Course")
-                        .WithMany("Schedules")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("Models.Course", b =>
-                {
-                    b.Navigation("Schedules");
                 });
 #pragma warning restore 612, 618
         }

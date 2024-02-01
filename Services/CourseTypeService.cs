@@ -28,8 +28,6 @@ namespace Services
         {
             _unitOfWork.CourseType.Add(entity);
             await _unitOfWork.SaveChangesAsync();
-            Console.WriteLine(entity);
-            Console.WriteLine(entity);
         }
 
         public async Task UpdateAsync(CourseType entity)
