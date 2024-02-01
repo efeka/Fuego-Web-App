@@ -18,9 +18,9 @@ namespace Services
             _appUserService = appUserService;
         }
 
-        public async Task<IEnumerable<CourseStudent>> GetAllAsync(string? includeProperties = null)
+        public async Task<IEnumerable<CourseStudent>> GetAllAsync(Expression<Func<CourseStudent, bool>>? filter = null, string? includeProperties = null)
         {
-            return await _unitOfWork.CourseStudent.GetAllAsync(includeProperties);
+            return await _unitOfWork.CourseStudent.GetAllAsync(filter, includeProperties);
         }
 
         public async Task<CourseStudent?> GetAsync(Expression<Func<CourseStudent, bool>> filter, string? includeProperties = null)

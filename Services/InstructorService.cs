@@ -31,9 +31,9 @@ namespace Services
             _defaultImagePath = Path.Combine("\\", _instructorImagesDir, _defaultInstructorImageFileName);
         }
 
-        public async Task<IEnumerable<Instructor>> GetAllAsync(string? includeProperties = null)
+        public async Task<IEnumerable<Instructor>> GetAllAsync(Expression<Func<Instructor, bool>>? filter = null, string? includeProperties = null)
         {
-            return await _unitOfWork.Instructor.GetAllAsync(includeProperties);
+            return await _unitOfWork.Instructor.GetAllAsync(filter, includeProperties);
         }
 
         public async Task<Instructor?> GetAsync(Expression<Func<Instructor, bool>> filter, string? includeProperties = null)

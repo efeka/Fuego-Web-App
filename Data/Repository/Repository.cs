@@ -15,11 +15,14 @@ namespace Data.Repository
             dbSet = _db.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             try
             {
                 IQueryable<T> query = dbSet;
+                if (filter != null)
+                    query = query.Where(filter);
+
                 if (!string.IsNullOrEmpty(includeProperties))
                 {
                     foreach (var includeProp in includeProperties

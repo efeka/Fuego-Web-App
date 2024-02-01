@@ -14,9 +14,9 @@ namespace Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<CourseType>> GetAllAsync(string? includeProperties = null)
+        public async Task<IEnumerable<CourseType>> GetAllAsync(Expression<Func<CourseType, bool>>? filter = null, string? includeProperties = null)
         {
-            return await _unitOfWork.CourseType.GetAllAsync(includeProperties);
+            return await _unitOfWork.CourseType.GetAllAsync(filter, includeProperties);
         }
 
         public async Task<CourseType?> GetAsync(Expression<Func<CourseType, bool>> filter, string? includeProperties = null)
@@ -28,6 +28,8 @@ namespace Services
         {
             _unitOfWork.CourseType.Add(entity);
             await _unitOfWork.SaveChangesAsync();
+            Console.WriteLine(entity);
+            Console.WriteLine(entity);
         }
 
         public async Task UpdateAsync(CourseType entity)
