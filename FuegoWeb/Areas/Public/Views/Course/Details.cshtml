@@ -1,67 +1,204 @@
 ﻿@using Models
 @model Course
 
-<!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="~/css/courseDetails.css" />
-        <title>Course Details</title>
+        <link rel="stylesheet" href="~/css/course/schedules.css" />
     </head>
     <body>
         <form method="post">
-            <div class="course-header">
-                <a asp-action="Index" class="btn btn-outline-primary bg-gradient fw-semibold btn-sm text-uppercase">
-                    <small>Back to Courses</small>
-                </a>
-                <div class="instructor-info">
-                    <img class="instructor-image" src="@Model.Instructor.ImageUrl" />
-                    <a class="instructor-name" asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id">
-                        <p>@Model.Instructor.Name @Model.Instructor.Surname</p>
-                    </a>
-                </div>
-            </div>
+            <div class="card shadow border-0 mt-4">
+                <div class="card-header bg-secondary bg-gradient text-light py-4">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h3 class="text-white text-uppercase">
+                                @Model.Title
+                            </h3>
 
-            <div class="wrapper">
-                <div class="course-container">
-                    <img class="course-image" src="@Model.ImageUrl" />
-                    <div class="course-info">
-                        <h4 class="course-title">@Model.Title &nbsp</h4>
-                        <h4 class="course-type">@Model.CourseType.Type</h4>
-                        <p class="course-desc">@Html.Raw(@Model.Description)</p>
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                                <img src="@Model.Instructor.ImageUrl"
+                                     style="width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;" />
+                                <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id"
+                                   class="text-white-50 fw-semibold mb-0 link-light link-underline-opacity-50 link-underline-opacity-75-hover">
+                                    @Model.Instructor.Name @Model.Instructor.Surname
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="card-body">
+                    <div class="py-3">
+                        <div class="row">
+                            <div class="col-6 col-md-2 offset-lg-1 pb-1">
+                                <a asp-controller="Course" asp-action="Index"
+                                   class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                                    <small>Back to courses</small>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
+                                <img src="@Model.ImageUrl"
+                                     style="width: 100%;"
+                                     class="rounded" />
+                            </div>
+                            <div class="col-12 col-lg-6 offset-lg-1">
+                                <div class="col-12 col-md-6 pb-4">
+                                    <span class="badge">@Model.CourseType.Type</span>
+                                </div>
 
-                <hr />
+                                <!-- Schedule info get added here -->
+                                <div id="schedule-container" class="schedule-container"></div>
 
-                <div>
+                                <div class="row pl-2 my-3">
+                                    <p class="text-secondary lh-sm">@Html.Raw(@Model.Description)</p>
+                                </div>
 
+                                <div class="row pl-2 mb-3">
+                                    <div class="col-md-4">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text bg-primary text-white border-0 fw-semibold"
+                                                  id="inputGroup-sizing-default">
+                                                Count
+                                            </span>
+                                            <input type="number"
+                                                   value="1"
+                                                   class="form-control text-end"
+                                                   aria-label="Sizing example input"
+                                                   aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6 pb-1">
+                                        <button type="submit"
+                                                disabled
+                                                class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
+                                            Add to Cart (Comming Soon...)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!--
-            <div>
-
-            </div>
-
-                <h2 class="details-title">Course Details</h2>
-            <div class="border course-container my-3 mx-3">
-
-                <div>
-                    <img class="course-image" src="@Model.ImageUrl" />
-                </div>
-                        
-                <div>
-                    <h4 class="course-title">@Model.Title &nbsp</h4>
-                    <h4 class="course-type">@Model.CourseType.Type</h4>
-                    <p class="course-desc">@Model.Description</p>
-                </div>
-
-            </div>
-            -->
-        <button type="submit" disabled class="btn btn-primary bg-gradient mt-3 w-100 py-2 text-uppercase fw-semibold">
-                Submit Attendence
-            </button>
         </form>
     </body>
 </html>
 
+@section Scripts {
+    <script>
+        function getDayName(dayIndex) {
+            var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            return days[dayIndex];
+        }
+
+        var schedules = @Html.Raw(Json.Serialize(Model.Schedules));
+        var scheduleMap = new Map();
+
+        // Put hours of each day in its own map entry
+        schedules.forEach(function (schedule) {
+            if (!scheduleMap.has(schedule.dayOfWeek))
+                scheduleMap.set(schedule.dayOfWeek, []);
+            scheduleMap.get(schedule.dayOfWeek).push(schedule.hour);
+        });
+
+        var daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+        // Sort the hours for each day based on the custom order
+        daysOrder.forEach(function (dayOfWeek) {
+            if (scheduleMap.has(dayOfWeek)) {
+                var hours = scheduleMap.get(dayOfWeek).sort();
+                scheduleMap.set(dayOfWeek, hours);
+            }
+        });
+
+        /*
+            <div class="schedule-container">
+                <div>
+                    <p>Day Name</p>
+                    <div class="hour-container">
+                        <p>Hour 1</p>
+                        <p>Hour 2</p>
+                        ...
+                    </div>
+                </div>
+                ...
+            </div>
+        */
+        var scheduleContainer = document.getElementById('schedule-container');
+
+        scheduleMap.forEach((hours, dayOfWeek) => {
+            var dayNameP = document.createElement('p');
+            dayNameP.classList.add(
+                'day', 'text-dark', 'text-opacity-50', 'fw-semibold',
+                'bg-white', 'border-bottom'
+            );
+            dayNameP.innerHTML = getDayName(dayOfWeek);
+
+            var hoursContainer = document.createElement('div');
+            hoursContainer.classList.add('hour-container');
+            hours.forEach(hour => {
+                var hourP = document.createElement('p');
+                hourP.classList.add(
+                    'hour', 'bg-white', 'text-warning', 'fw-bold'
+                );
+                hourP.innerHTML = hour.substring(0, 5);
+
+                hoursContainer.appendChild(hourP);
+            });
+
+            var scheduleDiv = document.createElement('div');
+            scheduleDiv.appendChild(dayNameP);
+            scheduleDiv.appendChild(hoursContainer);
+
+            scheduleContainer.appendChild(scheduleDiv);
+        });
+        
+        /*
+        // Find the maximum number of hours in any day
+        var maxHours = Math.max(...Array.from(scheduleMap.values()).map(hours => hours.length));
+
+        // Append the row with day names to the element with id="schedule-container"
+        var scheduleContainer = document.getElementById('schedule-container');
+        var dayNameRowDiv = document.createElement('div');
+        dayNameRowDiv.classList.add('row', 'text-center', 'ps-2');
+
+        scheduleMap.forEach(function (hours, dayOfWeek) {
+            if (hours.length > 0) {
+                var colDivInner = document.createElement('div');
+                colDivInner.classList.add('text-dark', 'text-opacity-50', 'fw-semibold');
+                colDivInner.innerHTML = getFullDayName(dayOfWeek);
+
+                var colDivOuter = document.createElement('div');
+                colDivOuter.classList.add('p-1', 'col-2', 'col-lg-1', 'bg-white', 'border-bottom');
+                colDivOuter.appendChild(colDivInner);
+
+                dayNameRowDiv.appendChild(colDivOuter);
+            }
+        });
+
+        scheduleContainer.appendChild(dayNameRowDiv);
+
+        // Append the rows with hours to the element with id="schedule-container"
+        for (var i = 0; i < maxHours; i++) {
+            var rowDiv = document.createElement('div');
+            rowDiv.classList.add('row', 'text-center', 'ps-2');
+
+            scheduleMap.forEach(function (hours, dayOfWeek) {
+                var colDiv = document.createElement('div');
+                colDiv.classList.add('p-1', 'col-2', 'col-lg-1', 'bg-white', 'text-warning', 'fw-bold');
+
+                var hour = hours[i] !== undefined ? hours[i].substring(0, 5) : '';
+                colDiv.innerHTML = hour;
+
+                rowDiv.appendChild(colDiv);
+            });
+
+            scheduleContainer.appendChild(rowDiv);
+        }
+        */
+    </script>
+}

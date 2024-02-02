@@ -27,7 +27,7 @@ namespace FuegoWeb.Areas.Student.Controllers
         {
             Course? courseFromDb = await _courseService.GetAsync(
                 u => u.Id == courseId,
-                includeProperties: "Instructor,CourseType"
+                includeProperties: "Instructor,CourseType,Schedules"
             );
             if (courseFromDb == null)
             {

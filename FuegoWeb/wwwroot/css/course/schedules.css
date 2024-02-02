@@ -1,0 +1,21 @@
+﻿.schedule-container {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    text-align: center;
+}
+
+.day {
+    padding: 0 15px 0 15px;
+    margin-bottom: 0;
+}
+
+.hour-container {
+    text-align: center;
+    padding-top: 5px;
+    padding: 5px 10px 5px 10px;
+}
+
+.hour {
+    margin-bottom: 5px;
+}
