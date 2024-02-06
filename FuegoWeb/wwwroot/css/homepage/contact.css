@@ -1,23 +1,4 @@
-﻿* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Calibri;
-    box-sizing: border-box;
-}
-
-:root {
-    --offwhite: #F5F5F5;
-    --darkgray: #3A3A3A;
-    --gray: #8a8a8a;
-    --lightgray: #b1b1b1;
-    --darkblue: #001122;
-}
-
-body {
-    background-color: var(--offwhite);
-}
-
-.contact-wrapper {
+﻿.contact-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -73,6 +54,7 @@ body {
     padding: 10px 15px 10px 15px;
     text-align: center;
     font-size: 1rem;
+    font-weight: 500;
 }
 
 .insta-anchor {

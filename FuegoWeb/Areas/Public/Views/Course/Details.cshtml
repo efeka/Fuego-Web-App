@@ -156,49 +156,5 @@
 
             scheduleContainer.appendChild(scheduleDiv);
         });
-        
-        /*
-        // Find the maximum number of hours in any day
-        var maxHours = Math.max(...Array.from(scheduleMap.values()).map(hours => hours.length));
-
-        // Append the row with day names to the element with id="schedule-container"
-        var scheduleContainer = document.getElementById('schedule-container');
-        var dayNameRowDiv = document.createElement('div');
-        dayNameRowDiv.classList.add('row', 'text-center', 'ps-2');
-
-        scheduleMap.forEach(function (hours, dayOfWeek) {
-            if (hours.length > 0) {
-                var colDivInner = document.createElement('div');
-                colDivInner.classList.add('text-dark', 'text-opacity-50', 'fw-semibold');
-                colDivInner.innerHTML = getFullDayName(dayOfWeek);
-
-                var colDivOuter = document.createElement('div');
-                colDivOuter.classList.add('p-1', 'col-2', 'col-lg-1', 'bg-white', 'border-bottom');
-                colDivOuter.appendChild(colDivInner);
-
-                dayNameRowDiv.appendChild(colDivOuter);
-            }
-        });
-
-        scheduleContainer.appendChild(dayNameRowDiv);
-
-        // Append the rows with hours to the element with id="schedule-container"
-        for (var i = 0; i < maxHours; i++) {
-            var rowDiv = document.createElement('div');
-            rowDiv.classList.add('row', 'text-center', 'ps-2');
-
-            scheduleMap.forEach(function (hours, dayOfWeek) {
-                var colDiv = document.createElement('div');
-                colDiv.classList.add('p-1', 'col-2', 'col-lg-1', 'bg-white', 'text-warning', 'fw-bold');
-
-                var hour = hours[i] !== undefined ? hours[i].substring(0, 5) : '';
-                colDiv.innerHTML = hour;
-
-                rowDiv.appendChild(colDiv);
-            });
-
-            scheduleContainer.appendChild(rowDiv);
-        }
-        */
     </script>
 }
