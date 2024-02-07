@@ -1,0 +1,12 @@
+﻿.card {
+    width: 280px;
+    height: 450px;
+    max-width: 280px;
+    max-height: 500px;
+}
+
+    .card img {
+        width: 250px;
+        height: 300px;
+        overflow: hidden;
+    }
