@@ -18,33 +18,25 @@
             </div>
         </div>
 
-        <div class="d-flex column-gap-lg-5 column-gap-sm-3 row-gap-5 justify-content-center flex-wrap mt-3">
+        <div class="cards-container">
             @foreach (var course in Model)
             {
-                <div class="card border-0 p-3 shadow border-top border-5 rounded">
-                    <img src="@course.ImageUrl" class="rounded" />
-                    <div class="card-body pb-0">
-                        <div>
-                            <p class="card-title fw-bold fs-6 text-dark text-center border-bottom pb-2">
-                                @course.Title
-                            </p>
-
-                            <div class="pl-1">
-                                <p class="text-center mb-1">
-                                    <span class="badge p-1">
-                                        @course.CourseType.Type
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <p class="card-title text-warning text-center">
-                            <b>@course.Instructor.Name @course.Instructor.Surname</b>
+                <div class="course-card" 
+                    style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url('@course.ImageUrl.Replace("\\", "/")')">
+                    <p class="badge-wrapper">
+                        <span class="badge">
+                            @course.CourseType.Type
+                        </span>
+                    </p>
+                    <div>
+                        <h1>@course.Title</h1>
+                        <p>
+                            @course.Instructor.Name @course.Instructor.Surname
                         </p>
+                        <a asp-controller="Course" asp-action="Details" asp-route-courseId="@course.Id">
+                            Detaylı Bilgi
+                        </a>
                     </div>
-                    <a asp-action="Details" asp-route-courseId="@course.Id" class="btn btn-primary bg-gradient border-0 form-control">
-                        Detaylı Bilgi
-                    </a>
                 </div>
             }
         </div>

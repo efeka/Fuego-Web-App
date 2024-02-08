@@ -1,12 +1,65 @@
-﻿.card {
-    width: 280px;
-    height: 450px;
-    max-width: 280px;
-    max-height: 500px;
+﻿.cards-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 15px;
+    gap: 50px;
 }
 
-    .card img {
-        width: 250px;
-        height: 300px;
-        overflow: hidden;
+.course-card {
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    height: 400px;
+
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 10px 10px gray;
+}
+
+    .course-card h1 {
+        color: white;
+        font-size: 25px;
+        margin: 5px 5px 5px 10px;
     }
+
+    .course-card p {
+        color: var(--lightgray);
+        font-size: 16px;
+        margin: 5px 5px 15px 10px;
+    }
+
+    .course-card a {
+        display: block;
+        color: lightgray;
+        text-decoration: none;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 10px;
+        border: 3px solid rgba(0, 0, 0, 0);
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(3px);
+        padding: 5px 0 8px 0;
+        margin: 5px;
+        transition: 0.3s;
+    }
+
+        .course-card a:hover {
+            background-color: rgba(255, 255, 255, 0);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+.badge-wrapper {
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    left: -5px;
+    background-color: rgb(255, 152, 68);
+}
