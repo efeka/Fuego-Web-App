@@ -1,47 +1,26 @@
-﻿* {
-    box-sizing: border-box;
-}
-
-body {
-    background-color: rgb(31, 31, 31);
-}
-
-.header {
-    text-align: center;
-    margin-top: 50px;
-    margin-bottom: 30px;
-    font-family: Calibri;
-    letter-spacing: 5px;
-    font-size: 3rem;
-    width: 100%;
-    outline: none;
-
-    color: #FFF;
-    --shadow-color: #ff0000;
-    text-shadow: 0 0 10px var(--shadow-color),
-        0 0 20px var(--shadow-color),
-        0 0 40px var(--shadow-color),
-        0 0 80px var(--shadow-color),
-        0 0 160px var(--shadow-color);
-}
-
-.container {
+﻿.container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    column-gap: 80px;
+    column-gap: 150px;
+}
+
+@media screen and (width < 1000px) {
+    .container {
+        column-gap: 80px;
+    }
 }
 
 .instructor {
+    margin-bottom: 50px;
     cursor: pointer;
     text-decoration: none;
-    margin-top: 50px;
 }
 
 .image-wrapper {
     display: inline-block;
     overflow: hidden;
-    border-radius: 125px;
+    border-radius: 200px;
 }
 
 .image {
@@ -54,28 +33,30 @@ body {
     transition: .3s ease-in-out;
 }
 
-.image:hover {
-    transform: scale(1.3);
-    -ms-transform: scale(1.3);
-    -moz-transform: scale(1.3);
-    -webkit-transform: scale(1.3);
-    -o-transform: scale(1.3);
-}
+    .image:hover {
+        transform: scale(1.3);
+        -ms-transform: scale(1.3);
+        -moz-transform: scale(1.3);
+        -webkit-transform: scale(1.3);
+        -o-transform: scale(1.3);
+    }
 
 .courses, 
 .name {
-    color: white;
+    color: var(--darkgray);
     text-align: center;
-    font-family: Calibri;
 }
 
 .name {
     font-size: 1.6rem;
+    font-weight: 500;
     margin-top: 10px;
     margin-bottom: 5px;
+    margin: 10px 40px 0 40px;
 }
 
 .courses {
     font-size: 1.1rem;
-    color: orange;
+    font-weight: 600;
+    color: teal;
 }

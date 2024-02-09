@@ -2,22 +2,21 @@
 @model List<InstructorVM>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
     <head>
         <link rel="stylesheet" href="~/css/instructors.css" />
         <title>Instructors</title>
     </head>
     <body>
-        <!--div class="mt-4">
-            <div class="card-header bg-dark bg-gradient ml-0 py-3">
+        <div class="border-0 mb-5" style="margin: 70px 10px 0 10px;">
+            <div class="card-header rounded bg-black bg-gradient ml-0 py-3">
                 <div class="row">
                     <div class="col-12 text center">
-                        <h2 class="text-white py-2 text-center">Our Instructors</h2>
+                        <h2 class="text-white py-2 text-center">Eğitmenlerimiz</h2>
                     </div>
                 </div>
             </div>
-        </div-->
-        <h1 class="header">Our Instructors</h1>
+        </div>
 
         <div class="container">
             @foreach (var instructor in Model)
@@ -37,7 +36,7 @@
                         {
                             @foreach (var courseType in uniqueCourseTypes)
                             {
-                                <span style="color: white;">@separator</span>
+                                <span style="color: var(--darkgray);">@separator</span>
                                 @courseType
                                 separator = " | ";
                             }

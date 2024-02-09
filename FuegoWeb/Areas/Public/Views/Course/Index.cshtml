@@ -8,8 +8,8 @@
         <link href="~/css/course/cards.css" rel="stylesheet" />
     </head>
     <body>
-        <div class="shadow border-0 m-2 m-lg-3 m-md-3">
-            <div class="card-header rounded bg-dark bg-gradient ml-0 py-3">
+        <div class="border-0 mb-5" style="margin: 70px 10px 0 10px;">
+            <div class="card-header rounded bg-black bg-gradient ml-0 py-3">
                 <div class="row">
                     <div class="col-12 text center">
                         <h2 class="text-white py-2 text-center">Aktif Dersler</h2>
@@ -21,8 +21,8 @@
         <div class="cards-container">
             @foreach (var course in Model)
             {
-                <div class="course-card" 
-                    style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url('@course.ImageUrl.Replace("\\", "/")')">
+                <div class="course-card"
+                        style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url('@course.ImageUrl.Replace("\\", "/")')">
                     <p class="badge-wrapper">
                         <span class="badge">
                             @course.CourseType.Type
