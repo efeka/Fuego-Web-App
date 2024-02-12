@@ -13,9 +13,12 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-black" data-bs-theme="dark" style="font-size: 1.2rem !important; position: fixed; top: 0; width: 100%; z-index: 999;">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm" data-bs-theme="dark" style="padding: 0; font-size: 1.2rem !important; position: fixed; top: 0; width: 100%; z-index: 999; background-color: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px);">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="Public" asp-controller="Home" asp-action="Index">FuegoWeb</a>
+                <a class="navbar-brand" asp-area="Public" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/common/fuego_logo.png" style="width: 55px;" alt="Fuego Logo" />
+                </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,62 +27,58 @@
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Public" asp-controller="Home" asp-action="Index">
-                                Home
+                                Anasayfa
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Public" asp-controller="Instructor" asp-action="Index">
-                                Instructors
+                                Eğitmenler
                             </a>
                         </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Courses
+                                Dersler
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Public" asp-controller="Course" asp-action="Index">All Courses</a>
+                                    <a class="dropdown-item" asp-area="Public" asp-controller="Course" asp-action="Index">Tüm Dersler</a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Public" asp-controller="Course" asp-action="Index">My Courses</a>
+                                    <a class="dropdown-item" asp-area="Public" asp-controller="Course" asp-action="Index">Derslerim</a>
                                 </li>
                             </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Public" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
                         @if(User.IsInRole(ApplicationRoles.Role_Admin))
                         {
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Content Management
+                                Admin Paneli
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Instructor" asp-action="Index">Instructors</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Instructor" asp-action="Index">Eğitmenler</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
 
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Courses</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Course" asp-action="Index">Dersler</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="CourseType" asp-action="Index">Course Types</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="CourseType" asp-action="Index">Ders Türleri</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="CourseStudent" asp-action="Index">Course-Students</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="CourseStudent" asp-action="Index">Ders Öğrencileri</a>
                                 </li>
 
                                 <li><hr class="dropdown-divider"></li>
 
                                 <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Users</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">Kullanıcılar</a>
                                 </li>
                             </ul>
                         </li>
@@ -101,7 +100,7 @@
     <div style="margin-top: 100px;"></div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - FuegoWeb - <a asp-area="Public" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            2024 - FuegoWeb
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
