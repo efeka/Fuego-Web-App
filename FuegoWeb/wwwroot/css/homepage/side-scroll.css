@@ -1,6 +1,14 @@
-﻿.side-scroller {
+﻿.carousel {
+    position: relative;
+    --_side-scroller__inline-margin: 100px;
+}
+
+.side-scroller {
     --_scroll-element__width: 400px;
     --_scroll-element__height: 480px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
     display: flex;
     height: min-content;
@@ -9,26 +17,12 @@
     padding-bottom: 5px;
     scroll-padding: 10px;
     padding-left: 10px;
-    margin: 50px;
+    margin: 50px var(--_side-scroller__inline-margin) 50px var(--_side-scroller__inline-margin);
 }
 
-@media screen and (max-width: 650px) {
-    .side-scroller {
-        --_scroll-element__width: 300px;
-        gap: 30px;
-        margin-left: 20px;
-        margin-right: 20px;
+    .side-scroller::-webkit-scrollbar {
+        display: none;
     }
-}
-
-@media screen and (max-width: 500px) {
-    .side-scroller {
-        --_scroll-element__width: 200px;
-        gap: 20px;
-        margin-left: 20px;
-        margin-right: 20px;
-    }
-}
 
 .scroll-element {
     width: var(--_scroll-element__width);
@@ -66,66 +60,6 @@
         margin-bottom: 0;
     }
 
-    .scroll-element a {
-        color: darkred;
-        display: block;
-        font-weight: 500;
-    }
-
-        /*
-.side-scroller {
-    --_scroll-card-height: 360px;
-    --_scroll-card-width: 320px;
-
-    display: flex;
-    height: min-content;
-    overflow-x: auto;
-
-    gap: 30px;
-    padding-bottom: 5px;
-    scroll-padding: 10px;
-    padding-left: 10px;
-    margin: 50px;
-}
-
-.scroll-element {
-    display: grid;
-    grid-template-rows: calc(var(--_scroll-card-height) * 0.5), calc(var(--_scroll-card-height) * 0.5);
-    width: var(--_scroll-card-width);
-    height: var(--_scroll-card-height);
-    margin-bottom: 20px;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-}
-
-    .scroll-element div {
-        display: grid;
-        grid-template-rows: 30px 30px 30px;
-    }
-
-    .scroll-element img {
-        width: var(--_scroll-card-width);
-        height: calc(var(--_scroll-card-height) * 0.5);
-        border-radius: 10px 10px 0 0;
-    }
-
-    .scroll-element h1 {
-        font-size: 25px;
-        font-weight: bold;
-        color: var(--darkgray);
-    }
-
-    .scroll-element p {
-        width: var(--_scroll-card-width);
-        color: var(--darkgray);
-        mask: linear-gradient(0deg, rgba(255, 255, 255, 0), white 70%);
-        overflow: hidden;
-        
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-*/
 .snaps-inline {
     scroll-snap-type: inline mandatory;
 }
@@ -135,31 +69,60 @@
     }
 
 .scroll-button {
-    display: flex;
-    justify-content: center;
-    
-    font-size: 32px;
-    width: 50px;
-    height: 50px;
-    padding: 0;
+    position: absolute;
+    top: 10%;
+    width: 40px;
+    height: 50%;
     border: none;
-    border-radius: 15px;
-
-    cursor: pointer;
-    background-color: #313131BB;
-    color: #CFCFCF;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    border: 1px solid #BBBBBB;
+    font-size: 28px;
+    font-weight: bold;
+    background-color: var(--offwhite);
+    color: var(--darkgray);
     transition: 0.15s;
 }
 
     .scroll-button:hover {
-        background-color: #252525;
+        background-color: var(--darkgray);
         color: white;
     }
 
     .scroll-button.left {
-        left: 30px;
+        left: calc(var(--_side-scroller__inline-margin) * 0.5);
     }
 
     .scroll-button.right {
-        right: 20px;
+        right: calc(var(--_side-scroller__inline-margin) * 0.5);
     }
+
+@media screen and (max-width: 650px) {
+    .carousel {
+        --_side-scroller__inline-margin: 20px;
+    }
+
+    .scroll-button {
+        display: none;
+    }
+
+    .side-scroller {
+        --_scroll-element__width: 300px;
+        gap: 30px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .carousel {
+        --_side-scroller__inline-margin: 20px;
+    }
+
+    .scroll-button {
+        display: none;
+    }
+
+    .side-scroller {
+        --_scroll-element__width: 200px;
+        gap: 20px;
+    }
+}
