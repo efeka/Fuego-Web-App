@@ -42,6 +42,34 @@
         background: transparent;
     }
 
+.introduction {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+    .introduction h1 {
+        width: 100%;
+        font-size: 40px;
+        font-weight: bold;
+        color: var(--darkgray);
+        margin-bottom: 20px;
+    }
+
+    .introduction p {
+        max-width: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 400;
+        color: black;
+    }
+
 @media screen and (width < 800px) {
     .banner-content h1 {
         font-size: 70px;
