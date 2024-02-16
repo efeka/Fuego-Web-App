@@ -11,6 +11,6 @@ namespace Models
         [JsonIgnore]
         public int CourseId { get; set; }
         [JsonIgnore]
-        public Course Course { get; set; }
+        public Course Course { get; set; } = new();
     }
 }
