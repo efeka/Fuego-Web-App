@@ -25,6 +25,9 @@ namespace Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
+        [Required]
+        public int Quota { get; set; }
+
         [ValidateNever]
         public string ImageUrl { get; set; } = string.Empty;
 
