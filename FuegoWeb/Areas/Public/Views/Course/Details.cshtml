@@ -7,32 +7,35 @@
     </head>
     <body>
         <form method="post">
-            <div class="card shadow border-0 mt-4">
-                <div class="card-header bg-secondary bg-gradient text-light py-4">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <h3 class="text-white text-uppercase">
-                                @Model.Title
-                            </h3>
+            <div class="border-0 mb-5" style="margin: 70px 10px 0 10px; overflow-x: hidden;">
+                <div class="border-0 m-2 m-lg-3 m-md-3 mb-lg-1 mb-md-1 mb-1 mt-2">
+                    <div class="card-header rounded bg-black bg-gradient text-light py-2">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h3 class="text-white text-uppercase">
+                                    @Model.Title
+                                </h3>
 
-                            <div style="display: flex; justify-content: center; align-items: center;">
-                                <img src="@Model.Instructor.ImageUrl"
-                                     style="width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;" />
-                                <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id"
-                                   class="text-white-50 fw-semibold mb-0 link-light link-underline-opacity-50 link-underline-opacity-75-hover">
-                                    @Model.Instructor.Name @Model.Instructor.Surname
-                                </a>
+                                <div style="display: flex; justify-content: center; align-items: center;">
+                                    <img src="@Model.Instructor.ImageUrl"
+                                         style="width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;" />
+                                    <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id"
+                                       class="text-white-50 fw-semibold mb-0 link-light link-underline-opacity-50 link-underline-opacity-75-hover">
+                                        @Model.Instructor.Name @Model.Instructor.Surname
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body">
                     <div class="py-3">
                         <div class="row">
                             <div class="col-6 col-md-2 offset-lg-1 pb-1">
                                 <a asp-controller="Course" asp-action="Index"
                                    class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
-                                    <small>Back to courses</small>
+                                    <small>Derslere Geri Dön</small>
                                 </a>
                             </div>
                         </div>
@@ -43,11 +46,9 @@
                                      class="rounded" />
                             </div>
                             <div class="col-12 col-lg-6 offset-lg-1">
-                                <div class="col-12 col-md-6 pb-4">
-                                    <span class="badge">@Model.CourseType.Type</span>
-                                </div>
+                                <span class="badge mb-3">@Model.CourseType.Type</span>
 
-                                <!-- Schedule info get added here -->
+                                <!-- Schedule info gets added here -->
                                 <div id="schedule-container" class="schedule-container"></div>
 
                                 <div class="row pl-2 my-3">
@@ -156,49 +157,5 @@
 
             scheduleContainer.appendChild(scheduleDiv);
         });
-        
-        /*
-        // Find the maximum number of hours in any day
-        var maxHours = Math.max(...Array.from(scheduleMap.values()).map(hours => hours.length));
-
-        // Append the row with day names to the element with id="schedule-container"
-        var scheduleContainer = document.getElementById('schedule-container');
-        var dayNameRowDiv = document.createElement('div');
-        dayNameRowDiv.classList.add('row', 'text-center', 'ps-2');
-
-        scheduleMap.forEach(function (hours, dayOfWeek) {
-            if (hours.length > 0) {
-                var colDivInner = document.createElement('div');
-                colDivInner.classList.add('text-dark', 'text-opacity-50', 'fw-semibold');
-                colDivInner.innerHTML = getFullDayName(dayOfWeek);
-
-                var colDivOuter = document.createElement('div');
-                colDivOuter.classList.add('p-1', 'col-2', 'col-lg-1', 'bg-white', 'border-bottom');
-                colDivOuter.appendChild(colDivInner);
-
-                dayNameRowDiv.appendChild(colDivOuter);
-            }
-        });
-
-        scheduleContainer.appendChild(dayNameRowDiv);
-
-        // Append the rows with hours to the element with id="schedule-container"
-        for (var i = 0; i < maxHours; i++) {
-            var rowDiv = document.createElement('div');
-            rowDiv.classList.add('row', 'text-center', 'ps-2');
-
-            scheduleMap.forEach(function (hours, dayOfWeek) {
-                var colDiv = document.createElement('div');
-                colDiv.classList.add('p-1', 'col-2', 'col-lg-1', 'bg-white', 'text-warning', 'fw-bold');
-
-                var hour = hours[i] !== undefined ? hours[i].substring(0, 5) : '';
-                colDiv.innerHTML = hour;
-
-                rowDiv.appendChild(colDiv);
-            });
-
-            scheduleContainer.appendChild(rowDiv);
-        }
-        */
     </script>
 }

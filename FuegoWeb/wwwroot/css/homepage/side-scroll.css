@@ -1,0 +1,128 @@
+﻿.carousel {
+    position: relative;
+    --_side-scroller__inline-margin: 100px;
+}
+
+.side-scroller {
+    --_scroll-element__width: 400px;
+    --_scroll-element__height: 480px;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    display: flex;
+    height: min-content;
+    overflow-x: auto;
+    gap: 50px;
+    padding-bottom: 5px;
+    scroll-padding: 10px;
+    padding-left: 10px;
+    margin: 50px var(--_side-scroller__inline-margin) 50px var(--_side-scroller__inline-margin);
+}
+
+    .side-scroller::-webkit-scrollbar {
+        display: none;
+    }
+
+.scroll-element {
+    width: var(--_scroll-element__width);
+    height: var(--_scroll-element__height);
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+    .scroll-element img {
+        object-fit: cover;
+        object-position: center;
+        width: var(--_scroll-element__width);
+        height: calc(var(--_scroll-element__height) * 0.5);
+        border-radius: 5px;
+    }
+
+    .scroll-element h1 {
+        font-size: 30px;
+        font-weight: bold;
+        color: var(--darkgray);
+        padding-top: 15px;
+    }
+
+    .scroll-element p {
+        width: var(--_scroll-card-width);
+        color: var(--darkgray);
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 6em;
+        /*
+        height: calc(var(--_scroll-element__height) * 0.2);
+        mask: linear-gradient(0deg, rgba(255, 255, 255, 0), white 70%);
+        */
+        margin-bottom: 0;
+    }
+
+.snaps-inline {
+    scroll-snap-type: inline mandatory;
+}
+
+    .snaps-inline > * {
+        scroll-snap-align: start;
+    }
+
+.scroll-button {
+    position: absolute;
+    top: 10%;
+    width: 40px;
+    height: 50%;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    border: 1px solid #BBBBBB;
+    font-size: 28px;
+    font-weight: bold;
+    background-color: var(--offwhite);
+    color: var(--darkgray);
+    transition: 0.15s;
+}
+
+    .scroll-button:hover {
+        background-color: var(--darkgray);
+        color: white;
+    }
+
+    .scroll-button.left {
+        left: calc(var(--_side-scroller__inline-margin) * 0.5);
+    }
+
+    .scroll-button.right {
+        right: calc(var(--_side-scroller__inline-margin) * 0.5);
+    }
+
+@media screen and (max-width: 650px) {
+    .carousel {
+        --_side-scroller__inline-margin: 20px;
+    }
+
+    .scroll-button {
+        display: none;
+    }
+
+    .side-scroller {
+        --_scroll-element__width: 300px;
+        gap: 30px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .carousel {
+        --_side-scroller__inline-margin: 20px;
+    }
+
+    .scroll-button {
+        display: none;
+    }
+
+    .side-scroller {
+        --_scroll-element__width: 200px;
+        gap: 20px;
+    }
+}

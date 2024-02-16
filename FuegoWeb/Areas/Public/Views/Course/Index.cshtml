@@ -2,49 +2,40 @@
 @model IEnumerable<Course>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
     <head>
         <title>Courses</title>
+        <link href="~/css/course/cards.css" rel="stylesheet" />
     </head>
     <body>
-        <div class="card shadow border-0 mt-4">
-            <div class="card-header bg-dark bg-gradient ml-0 py-3">
+        <div class="border-0 mb-5" style="margin: 80px 10px 0 10px; overflow-x: hidden;">
+            <div class="card-header rounded bg-black bg-gradient ml-0 py-1">
                 <div class="row">
                     <div class="col-12 text center">
-                        <h2 class="text-white py-2">Available Courses</h2>
+                        <h2 class="text-white py-2 text-center">Mevcut Dersler</h2>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row pb-3">
+        <div class="cards-container">
             @foreach (var course in Model)
             {
-                <div class="col-lg-3 col-sm-6">
-                    <div class="row p-2">
-                        <div class="col-12 p-1">
-                            <div class="card border-0 p-3 shadow border-top border-5 rounded">
-                                <img src="@course.ImageUrl" class="card-img-top rounded" />
-                                <div class="card-body pb-0">
-                                    <div class="pl-1">
-                                        <p class="card-title h5 text-dark text-uppercase text-center">@course.Title</p>
-                                        
-                                        <div class="pl-1">
-                                        <p class="text-dark opacity-75 text-center mb-1">
-                                                @course.CourseType.Type
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <p class="card-title text-warning text-center mb-3">
-                                        by <b>@course.Instructor.Name @course.Instructor.Surname</b>
-                                    </p>
-                                </div>
-                                <a asp-action="Details" asp-route-courseId="@course.Id" class="btn btn-primary bg-gradient border-0 form-control">
-                                    Details
-                                </a>
-                            </div>
-                        </div>
+                <div class="course-card"
+                        style="background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url('@course.ImageUrl.Replace("\\", "/")')">
+                    <p class="badge-wrapper">
+                        <span class="badge">
+                            @course.CourseType.Type
+                        </span>
+                    </p>
+                    <div>
+                        <h1>@course.Title</h1>
+                        <p>
+                            @course.Instructor.Name @course.Instructor.Surname
+                        </p>
+                        <a asp-controller="Course" asp-action="Details" asp-route-courseId="@course.Id">
+                            Detaylı Bilgi
+                        </a>
                     </div>
                 </div>
             }
