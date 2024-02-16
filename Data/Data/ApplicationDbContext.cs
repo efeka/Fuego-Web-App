@@ -11,6 +11,7 @@ namespace Data.Data
         public DbSet<CourseType> CourseTypes { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<CourseUser> CourseUsers { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

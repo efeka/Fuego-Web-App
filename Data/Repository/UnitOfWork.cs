@@ -10,6 +10,7 @@ namespace Data.Repository
         public IRepository<Instructor> Instructor { get; private set; }
         public IRepository<CourseType> CourseType { get; private set; }
         public IRepository<Course> Course { get; private set; }
+        public IRepository<CourseUser> CourseUser { get; private set; }
         public IRepository<Schedule> Schedule { get; set; }
 
         public UnitOfWork(ApplicationDbContext db)
@@ -18,6 +19,7 @@ namespace Data.Repository
             Instructor = new Repository<Instructor>(db);
             CourseType = new Repository<CourseType>(db);
             Course = new Repository<Course>(db);
+            CourseUser = new Repository<CourseUser>(db);
             Schedule = new Repository<Schedule>(db);
         }
 
