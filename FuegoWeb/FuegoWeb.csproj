@@ -41,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\CourseStudent\" />
     <Folder Include="Areas\Identity\Data\" />
   </ItemGroup>
 	

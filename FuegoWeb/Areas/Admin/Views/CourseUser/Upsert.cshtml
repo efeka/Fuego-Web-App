@@ -1,0 +1,55 @@
+﻿@using Models.ViewModels
+@model CourseUserVM
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-dark bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text center">
+                <h2 class="text-white py-2">Öğrenci-Kurs @(Model.CourseUser.Id != 0 ? "Düzenle" : "Oluştur")</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" class="row" enctype="multipart/form-data">
+    <input asp-for="CourseUser.Id" hidden />
+
+    <div class="form-floating py-2 col-12">
+        <select asp-for="CourseUser.ApplicationUserId" asp-items="@Model.ApplicationUsers" class="form-select border-o shadow">
+            <option disabled selected>--Öğrenci Seçiniz--</option>
+        </select>
+        <label asp-for="CourseUser.ApplicationUserId" class="ms-2">Öğrenci</label>
+        <span asp-validation-for="CourseUser.ApplicationUserId" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <select asp-for="CourseUser.CourseId" asp-items="@Model.Courses" class="form-select border-o shadow">
+            <option disabled selected>--Ders Seçiniz--</option>
+        </select>
+        <label asp-for="CourseUser.CourseId" class="ms-2">Ders</label>
+        <span asp-validation-for="CourseUser.CourseId" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating py-2 col-12">
+        <input asp-for="CourseUser.UserCredits" class="form-control border-o shadow" />
+        <label asp-for="CourseUser.UserCredits" class="ms-2"></label>
+        <span asp-validation-for="CourseUser.UserCredits" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <button type="submit" class="btn btn-primary form-control">
+                @(Model.CourseUser.Id != 0 ? "Düzenle" : "Oluştur")
+            </button>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="CourseUser" asp-action="Index" class="btn btn-outline-secondary border form-control">
+                <i class="bi bi-caret-left"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
