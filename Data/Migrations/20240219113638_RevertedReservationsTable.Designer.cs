@@ -4,6 +4,7 @@ using Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240219113638_RevertedReservationsTable")]
+    partial class RevertedReservationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,9 +361,6 @@ namespace Data.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CourseUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
@@ -370,8 +370,6 @@ namespace Data.Migrations
                     b.HasKey("ScheduleId");
 
                     b.HasIndex("CourseId");
-
-                    b.HasIndex("CourseUserId");
 
                     b.ToTable("Schedules");
                 });
@@ -488,19 +486,10 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.CourseUser", null)
-                        .WithMany("Schedules")
-                        .HasForeignKey("CourseUserId");
-
                     b.Navigation("Course");
                 });
 
             modelBuilder.Entity("Models.Course", b =>
-                {
-                    b.Navigation("Schedules");
-                });
-
-            modelBuilder.Entity("Models.CourseUser", b =>
                 {
                     b.Navigation("Schedules");
                 });

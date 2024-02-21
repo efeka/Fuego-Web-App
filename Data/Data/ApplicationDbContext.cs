@@ -5,7 +5,7 @@ using Models;
 
 namespace Data.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<IdentityUser>(options)
     {
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<CourseType> CourseTypes { get; set; }
@@ -13,11 +13,6 @@ namespace Data.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<CourseUser> CourseUsers { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -4,6 +4,7 @@ using Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240219111308_CreatedReservationsTable")]
+    partial class CreatedReservationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,6 +350,33 @@ namespace Data.Migrations
                     b.ToTable("Instructors");
                 });
 
+            modelBuilder.Entity("Models.Reservation", b =>
+                {
+                    b.Property<int>("ReservationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserCredits")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReservationId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("Models.Schedule", b =>
                 {
                     b.Property<int>("ScheduleId")
@@ -358,20 +388,20 @@ namespace Data.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CourseUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan>("Hour")
                         .HasColumnType("time");
 
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("int");
+
                     b.HasKey("ScheduleId");
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("CourseUserId");
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("Schedules");
                 });
@@ -480,6 +510,25 @@ namespace Data.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("Models.Reservation", b =>
+                {
+                    b.HasOne("Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("Models.Schedule", b =>
                 {
                     b.HasOne("Models.Course", "Course")
@@ -488,9 +537,9 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.CourseUser", null)
+                    b.HasOne("Models.Reservation", null)
                         .WithMany("Schedules")
-                        .HasForeignKey("CourseUserId");
+                        .HasForeignKey("ReservationId");
 
                     b.Navigation("Course");
                 });
@@ -500,7 +549,7 @@ namespace Data.Migrations
                     b.Navigation("Schedules");
                 });
 
-            modelBuilder.Entity("Models.CourseUser", b =>
+            modelBuilder.Entity("Models.Reservation", b =>
                 {
                     b.Navigation("Schedules");
                 });
