@@ -4,80 +4,88 @@
 <html>
     <head>
         <link rel="stylesheet" href="~/css/course/schedules.css" />
-        <link rel="stylesheet" href="~/css/course/reservations.css" />
-        <script src="~/js/reservations.js" defer></script>
     </head>
     <body>
-        <div class="border-0 mb-5" style="margin: 70px 10px 0 10px; overflow-x: hidden;">
-            <div class="border-0 m-2 m-lg-3 m-md-3 mb-lg-1 mb-md-1 mb-1 mt-2">
-                <div class="card-header rounded bg-black bg-gradient text-light py-2">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <h3 class="text-white text-uppercase">
-                                @Model.Title
-                            </h3>
+        <form method="post">
+            <div class="border-0 mb-5" style="margin: 70px 10px 0 10px; overflow-x: hidden;">
+                <div class="border-0 m-2 m-lg-3 m-md-3 mb-lg-1 mb-md-1 mb-1 mt-2">
+                    <div class="card-header rounded bg-black bg-gradient text-light py-2">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h3 class="text-white text-uppercase">
+                                    @Model.Title
+                                </h3>
 
-                            <div style="display: flex; justify-content: center; align-items: center;">
-                                <img src="@Model.Instructor.ImageUrl"
-                                        style="width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;" />
-                                <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id"
-                                    class="text-white-50 fw-semibold mb-0 link-light link-underline-opacity-50 link-underline-opacity-75-hover">
-                                    @Model.Instructor.Name @Model.Instructor.Surname
+                                <div style="display: flex; justify-content: center; align-items: center;">
+                                    <img src="@Model.Instructor.ImageUrl"
+                                         style="width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;" />
+                                    <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id"
+                                       class="text-white-50 fw-semibold mb-0 link-light link-underline-opacity-50 link-underline-opacity-75-hover">
+                                        @Model.Instructor.Name @Model.Instructor.Surname
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="py-3">
+                        <div class="row">
+                            <div class="col-6 col-md-2 offset-lg-1 pb-1">
+                                <a asp-controller="Course" asp-action="Index"
+                                   class="btn btn-outline-primary bg-gradient mb-5 fw-semibold btn-sm text-uppercase">
+                                    <small>Derslere Geri Dön</small>
                                 </a>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <div class="py-3">
-                    <div class="row">
-                        <div class="col-6 col-md-2 offset-lg-1 pb-1">
-                            <a asp-controller="Course" asp-action="Index"
-                                class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
-                                <small>Derslere Geri Dön</small>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                            <img src="@Model.ImageUrl"
-                                    style="width: 100%;"
-                                    class="rounded" />
-                        </div>
-                        <div class="col-12 col-lg-6 offset-lg-1">
-                            <span class="badge mb-3">@Model.CourseType.Type</span>
-
-                            <!-- Schedule info gets added here -->
-                            <div id="schedule-container" class="schedule-container"></div>
-
-                            <div class="row pl-2 my-3">
-                                <p class="text-secondary lh-sm">@Html.Raw(Model.Description)</p>
+                        <div class="row">
+                            <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
+                                <img src="@Model.ImageUrl"
+                                     style="width: 100%;"
+                                     class="rounded" />
                             </div>
+                            <div class="col-12 col-lg-6 offset-lg-1">
+                                <span class="badge mb-3">@Model.CourseType.Type</span>
 
-                            <!-- Reservation popup -->
-                            <div id="reservation-popup" class="reservation-popup">
-                                <div class="popup-content">
-                                    <h1>Popup</h1>
+                                <!-- Schedule info gets added here -->
+                                <div id="schedule-container" class="schedule-container"></div>
 
-                                    <a asp-controller="UserSchedule" asp-action="AddUserSchedule" asp-route-courseId="12" asp-route-scheduleId="23">Tamamla</a>
-                                    <button type="button" onclick="closePopup()">Vazgeç</button>
+                                <div class="row pl-2 my-3">
+                                    <p class="text-secondary lh-sm">@Html.Raw(@Model.Description)</p>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-8 col-md-4 pb-1">
-                                    <button type="button" onclick="openPopup()" class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
-                                        Rezervasyon Yap
-                                    </button>
+                                <div class="row pl-2 mb-3">
+                                    <div class="col-md-4">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text bg-primary text-white border-0 fw-semibold"
+                                                  id="inputGroup-sizing-default">
+                                                Count
+                                            </span>
+                                            <input type="number"
+                                                   value="1"
+                                                   class="form-control text-end"
+                                                   aria-label="Sizing example input"
+                                                   aria-describedby="inputGroup-sizing-default" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6 pb-1">
+                                        <button type="submit"
+                                                disabled
+                                                class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
+                                            Add to Cart (Comming Soon...)
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </body>
 </html>
 
@@ -136,7 +144,7 @@
             hours.forEach(hour => {
                 var hourP = document.createElement('p');
                 hourP.classList.add(
-                    'hour', 'text-warning', 'fw-bold'
+                    'hour', 'bg-white', 'text-warning', 'fw-bold'
                 );
                 hourP.innerHTML = hour.substring(0, 5);
 
