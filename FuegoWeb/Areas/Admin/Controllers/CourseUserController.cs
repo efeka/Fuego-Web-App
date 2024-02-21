@@ -54,7 +54,8 @@ namespace FuegoWeb.Areas.Admin.Controllers
             {
                 CourseUser = courseUser,
                 Courses = await GetCourseListAsync(),
-                ApplicationUsers = GetAppUserListAsync()
+                ApplicationUsers = GetAppUserListAsync(),
+                Schedule = await GetScheduleListAsync(id == null ? 0 : courseUser.CourseId)
             };
             return View(courseUserVM);
         }
@@ -64,17 +65,18 @@ namespace FuegoWeb.Areas.Admin.Controllers
         {
             try
             {
+                bool isInserting = courseUserVM.CourseUser.Id == 0;
+
                 if (!ModelState.IsValid)
                 {
                     courseUserVM.Courses = await GetCourseListAsync();
                     courseUserVM.ApplicationUsers = GetAppUserListAsync();
+                    TempData["error"] = "Failed to " + (isInserting ? "create" : "update") + " CourseUser";
                     return View(courseUserVM);
                 }
 
                 await _courseUserService.UpsertAsync(courseUserVM.CourseUser);
-                TempData["success"] = courseUserVM.CourseUser.Id == 0 ?
-                    "CourseUser created successfully" :
-                    "CourseUser updated successfully";
+                TempData["success"] = "CourseUser " + (isInserting ? "created" : "updated") + " successfully";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -97,6 +99,18 @@ namespace FuegoWeb.Areas.Admin.Controllers
                     Value = x.Id.ToString()
                 });
             return courseList;
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetScheduleListAsync(int courseId)
+        {
+            IEnumerable<SelectListItem> scheduleList =
+                (await _courseService.GetScheduleAsync(courseId))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.DayOfWeek + " " + x.Hour,
+                    Value = x.ScheduleId.ToString()
+                });
+            return scheduleList;
         }
 
         private IEnumerable<SelectListItem> GetAppUserListAsync()

@@ -124,5 +124,11 @@ namespace Services
             _unitOfWork.Course.Delete(courseToBeDeleted);
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Schedule>> GetScheduleAsync(int courseId)
+        {
+            Course? courseFromDb = await GetAsync(filter: u => u.Id == courseId, includeProperties: "Schedules");
+            return courseFromDb == null ? Enumerable.Empty<Schedule>() : courseFromDb.Schedules;
+        }
     }
 }

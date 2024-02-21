@@ -21,5 +21,8 @@ namespace Models
 
         [Required]
         public int UserCredits { get; set; }
+
+        [ValidateNever]
+        public List<Schedule> Schedules { get; set; } = new();
     }
 }

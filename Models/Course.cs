@@ -32,6 +32,6 @@ namespace Models
         public string ImageUrl { get; set; } = string.Empty;
 
         [ValidateNever]
-        public List<Schedule> Schedules { get; set; }
+        public List<Schedule> Schedules { get; set; } = new();
     }
 }

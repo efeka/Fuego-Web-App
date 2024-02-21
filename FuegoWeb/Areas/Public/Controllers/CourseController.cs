@@ -1,5 +1,6 @@
 ﻿using FuegoWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
 using Services;
 
@@ -9,10 +10,12 @@ namespace FuegoWeb.Areas.Student.Controllers
     public class CourseController : Controller
     {
         private readonly CourseService _courseService;
+        private readonly ScheduleService _scheduleService;
 
-        public CourseController(CourseService courseService)
+        public CourseController(CourseService courseService, ScheduleService scheduleService)
         {
             _courseService = courseService;
+            _scheduleService = scheduleService;
         }
 
         public async Task<IActionResult> Index()
@@ -36,7 +39,20 @@ namespace FuegoWeb.Areas.Student.Controllers
                     ErrorMessage = $"Failed to retrieve details for the course with id {courseId}"
                 });
             }
+
             return View("Details", courseFromDb);
+        }
+
+        private async Task<IEnumerable<SelectListItem>> GetScheduleListAsync(int courseId)
+        {
+            IEnumerable<SelectListItem> scheduleList =
+                (await _scheduleService.GetAllByCourseIdAsync(courseId))
+                .Select(x => new SelectListItem
+                {
+                    Text = x.DayOfWeek + " " + x.Hour,
+                    Value = x.ScheduleId.ToString()
+                });
+            return scheduleList;
         }
     }
 }
