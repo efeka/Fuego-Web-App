@@ -2,94 +2,165 @@
 @model Course
 
 <html>
-    <head>
-        <link rel="stylesheet" href="~/css/course/schedules.css" />
-        <link rel="stylesheet" href="~/css/course/reservations.css" />
-        <script src="~/js/reservations.js" defer></script>
-    </head>
-    <body>
-        <div class="border-0 mb-5" style="margin: 70px 10px 0 10px; overflow-x: hidden;">
-            <div class="border-0 m-2 m-lg-3 m-md-3 mb-lg-1 mb-md-1 mb-1 mt-2">
-                <div class="card-header rounded bg-black bg-gradient text-light py-2">
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <h3 class="text-white text-uppercase">
-                                @Model.Title
-                            </h3>
+<head>
+    <link rel="stylesheet" href="~/css/course/schedules.css" />
+    <link rel="stylesheet" href="~/css/course/reservations.css" />
 
-                            <div style="display: flex; justify-content: center; align-items: center;">
-                                <img src="@Model.Instructor.ImageUrl"
-                                        style="width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;" />
-                                <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id"
-                                    class="text-white-50 fw-semibold mb-0 link-light link-underline-opacity-50 link-underline-opacity-75-hover">
-                                    @Model.Instructor.Name @Model.Instructor.Surname
-                                </a>
-                            </div>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" defer></script>
+
+    <script src="~/js/reservations.js" defer></script>
+</head>
+<body>
+    <div class="shadow border-0 rounded-bottom-3 mx-4 pb-5 overflow-x-hidden" style="margin-top: 90px;">
+        <div class="border-0 mt-0">
+            <div class="card-header rounded-top-3 bg-black bg-gradient text-light py-3">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h3 class="text-white text-uppercase">
+                            @Model.Title
+                        </h3>
+
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="@Model.Instructor.ImageUrl"
+                                 style="width: 40px; height: 40px; border-radius: 20px; margin-right: 10px;" />
+                            <a asp-controller="Instructor" asp-action="Details" asp-route-instructorId="@Model.Instructor.Id"
+                               class="text-white-50 fw-semibold mb-0 link-light link-underline-opacity-50 link-underline-opacity-75-hover">
+                                @Model.Instructor.Name @Model.Instructor.Surname
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="card-body">
-                <div class="py-3">
-                    <div class="row">
-                        <div class="col-6 col-md-2 offset-lg-1 pb-1">
-                            <a asp-controller="Course" asp-action="Index"
-                                class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
-                                <small>Derslere Geri Dön</small>
-                            </a>
-                        </div>
+        <div class="card-body">
+            <div class="p-3">
+
+                <div class="row align-items-center mt-sm-4 mb-sm-3 my-md-4 px-2">
+                    <div class="p-1 col-3 offset-lg-1">
+                        <a asp-controller="Course" asp-action="Index"
+                           class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Derslere Geri Dön</small>
+                        </a>
                     </div>
-                    <div class="row">
-                        <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                            <img src="@Model.ImageUrl"
-                                    style="width: 100%;"
-                                    class="rounded" />
+                    <p class="col-3 offset-6 offset-lg-5 fw-semibold d-inline text-center"
+                       style="font-size: 1rem;">
+                        Mevcut ders krediniz:
+                        <span id="credits-info" class="text-success fw-bold">
+                            -
+                        </span>
+                    </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
+                        <img src="@Model.ImageUrl"
+                             style="width: 100%;"
+                             class="rounded" />
+                    </div>
+                    <div class="col-12 col-lg-6 offset-lg-1">
+                        <span class="badge mb-3">@Model.CourseType.Type</span>
+
+                        <!-- Schedule info gets added here -->
+                        <div id="schedule-container" class="schedule-container"></div>
+
+                        <div class="row pl-2 my-3">
+                            <p class="text-secondary lh-sm">@Html.Raw(@Model.Description)</p>
                         </div>
-                        <div class="col-12 col-lg-6 offset-lg-1">
-                            <span class="badge mb-3">@Model.CourseType.Type</span>
 
-                            <!-- Schedule info gets added here -->
-                            <div id="schedule-container" class="schedule-container"></div>
-
-                            <div class="row pl-2 my-3">
-                                <p class="text-secondary lh-sm">@Html.Raw(@Model.Description)</p>
-                            </div>
-
-                            <!-- Reservation popup -->
+                        <!-- Reservation popup -->
+                        <form asp-controller="UserSchedule" asp-action="Create" method="post">
                             <div id="reservation-popup" class="reservation-popup">
                                 <div class="popup-content">
                                     <h1>Popup</h1>
 
-                                    <a asp-controller="UserSchedule" asp-action="AddUserSchedule" asp-route-courseId="12" asp-route-scheduleId="23">Tamamla</a>
+                                    <!-- Bootstrap datepicker -->
+                                    <label for="datepicker">Tarih</label>
+                                    <div class="input-group date" data-provide="datepicker" id="datepicker">
+                                        <input type="text" class="form-control">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hour picker -->
+                                    <label for="hourpicker">Saat</label>
+                                    <div class="form-floating">
+                                        <select id="hourpicker" class="form-select border-o shadow">
+                                            <option disabled selected>--Saat seçiniz--</option>
+                                        </select>
+                                    </div>
+
                                     <button type="button" onclick="closePopup()">Vazgeç</button>
                                 </div>
                             </div>
+                        </form>
 
-                            <div class="row">
-                                <div class="col-8 col-md-4 pb-1">
-                                    <button type="button" onclick="openPopup()" class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
-                                        Rezervasyon Yap
-                                    </button>
-                                </div>
+                        <div class="row">
+                            <div class="col-8 col-md-4 pb-1">
+                                <button type="button" onclick="openPopup()" class="btn btn-primary bg-gradient w-100 py-2 text-uppercase fw-semibold">
+                                    Rezervasyon Yap
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
 
 @section Scripts {
+
     <script>
+        var creditInfoContainer = document.getElementById('credits-info');
+        var courseId = @Model.Id;
+
+        // AJAX call for retrieving user's credits for this course
+        function fetchRemainingCredits() {
+            fetch(`/Public/CourseUser/GetCredits/${courseId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                creditInfoContainer.innerHTML = '-';
+                return response.json();
+            })
+            .then(data => {
+                creditInfoContainer.innerHTML = data.credits;
+            })
+            .catch(error => {
+                console.error('Error fetching credits:', error);
+                creditInfoContainer.innerHTML = '-';
+            });
+        }
+
+        fetchRemainingCredits();
+    </script>
+
+    <script>
+        var schedules = @Html.Raw(Json.Serialize(Model.Schedules));
+        var scheduleMap = new Map();
+        var scheduleContainer = document.getElementById('schedule-container');
+
+        var daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
         function getDayName(dayIndex) {
             var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             return days[dayIndex];
         }
-
-        var schedules = @Html.Raw(Json.Serialize(Model.Schedules));
-        var scheduleMap = new Map();
 
         // Put hours of each day in its own map entry
         schedules.forEach(function (schedule) {
@@ -98,8 +169,6 @@
             scheduleMap.get(schedule.dayOfWeek).push(schedule.hour);
         });
 
-        var daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
         // Sort the hours for each day based on the custom order
         daysOrder.forEach(function (dayOfWeek) {
             if (scheduleMap.has(dayOfWeek)) {
@@ -107,21 +176,6 @@
                 scheduleMap.set(dayOfWeek, hours);
             }
         });
-
-        /*
-            <div class="schedule-container">
-                <div>
-                    <p>Day Name</p>
-                    <div class="hour-container">
-                        <p>Hour 1</p>
-                        <p>Hour 2</p>
-                        ...
-                    </div>
-                </div>
-                ...
-            </div>
-        */
-        var scheduleContainer = document.getElementById('schedule-container');
 
         scheduleMap.forEach((hours, dayOfWeek) => {
             var dayNameP = document.createElement('p');
@@ -149,5 +203,72 @@
 
             scheduleContainer.appendChild(scheduleDiv);
         });
+
+        function getAvailableDays() {
+            var availableDays = "";
+            for (var day = 0; day < 7; day++)
+                if (scheduleMap.has(day))
+                    availableDays += day + ",";
+            return availableDays.substring(0, availableDays.length - 1);
+        }
+
+        function getUnavailableDays() {
+            var unavailableDays = "";
+            for (var day = 0; day < 7; day++)
+                if (!scheduleMap.has(day))
+                    unavailableDays += day + ",";
+            return unavailableDays.substring(0, unavailableDays.length - 1);
+        }
     </script>
+
+    <script>
+        var hourpickerSelect = document.getElementById('hourpicker');
+
+        $(function () {
+            $("#datepicker").datepicker({
+                startView: 1,
+                language: "tr",
+                format: "dd/mm/yyyy",
+                weekStart: 1,
+                maxViewMode: 1,
+                todayBtn: "linked",
+                daysOfWeekDisabled: getUnavailableDays(),
+                daysOfWeekHighlighted: getAvailableDays(),
+                autoclose: true,
+                todayHighlight: false,
+                orientation: "bottom auto",
+
+                // Set the start date to the first day of the current month
+                startDate: new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth(),
+                    1
+                ),
+                // Set the end date to the last day of the next month
+                endDate: new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth() + 2,
+                    0
+                )
+            }).on('changeDate', function (e) {
+                // When a new date is selected, update the select list for available hours
+                hourpickerSelect.innerHTML = '<option disabled selected>Saat seçiniz</option>';
+                let day = e.date.getDay();
+                
+                scheduleMap.get(day).forEach(function (element) {
+                    var option = document.createElement('option');
+                    option.text = element;
+                    hourpickerSelect.add(option);
+                });
+            });
+        });
+
+        hourpickerSelect.addEventListener('change', function (event) {
+            // Callback for when the selection changes which retrieves current available quota
+            // TODO ajax call to fetch current quotas of the selected day
+            // event.target.value
+            
+        });
+    </script>
+
 }
