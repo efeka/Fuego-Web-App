@@ -1,4 +1,4 @@
-var popup = document.getElementById('reservation-popup');
+var popup = document.getElementById('popup');
 
 function openPopup() {
     popup.style.display = "block";

@@ -12,7 +12,7 @@
     background-color: white;
     border-radius: 15px;
     width: 300px;
-    height: 320px;
+    height: 330px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -64,7 +64,7 @@
 }
 
     .popup-credits > span {
-        color: steelblue;
+        color: seagreen;
         font-weight: bold;
     }
 
