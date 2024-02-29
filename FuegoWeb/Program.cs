@@ -34,6 +34,8 @@ builder.Services.AddScoped<CourseTypeService>();
 builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<ApplicationUserService>();
 builder.Services.AddScoped<CourseUserService>();
+builder.Services.AddScoped<ScheduleService>();
+builder.Services.AddScoped<ReservationService>();
 
 var app = builder.Build();
 

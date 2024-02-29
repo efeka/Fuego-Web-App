@@ -6,7 +6,7 @@ namespace Models
     {
         public int ScheduleId { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
-        public TimeSpan Hour { get; set; }
+        public TimeOnly Hour { get; set; }
 
         [JsonIgnore]
         public int CourseId { get; set; }

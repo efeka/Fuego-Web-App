@@ -12,5 +12,8 @@ namespace Models.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> ApplicationUsers { get; set; } = Enumerable.Empty<SelectListItem>();
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Schedule { get; set; } = Enumerable.Empty<SelectListItem>();
     }
 }

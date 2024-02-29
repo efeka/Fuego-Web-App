@@ -13,7 +13,7 @@ namespace Data.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<CourseUser> CourseUsers { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
-        public DbSet<UserSchedule> UserSchedules { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

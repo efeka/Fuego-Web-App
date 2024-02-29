@@ -12,7 +12,7 @@ namespace Data.Repository
         public IRepository<Course> Course { get; private set; }
         public IRepository<CourseUser> CourseUser { get; private set; }
         public IRepository<Schedule> Schedule { get; set; }
-        public IRepository<UserSchedule> UserSchedule { get; set; }
+        public IRepository<Reservation> Reservation { get; set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -22,7 +22,7 @@ namespace Data.Repository
             Course = new Repository<Course>(db);
             CourseUser = new Repository<CourseUser>(db);
             Schedule = new Repository<Schedule>(db);
-            UserSchedule = new Repository<UserSchedule>(db);
+            Reservation = new Repository<Reservation>(db);
         }
 
         public async Task SaveChangesAsync()

@@ -41,7 +41,6 @@
 
         <div class="card-body">
             <div class="p-3">
-
                 <div class="row align-items-center mt-sm-4 mb-sm-3 my-md-4 px-2">
                     <div class="p-1 col-3 offset-lg-1">
                         <a asp-controller="Course" asp-action="Index"
@@ -78,26 +77,31 @@
                         <form asp-controller="UserSchedule" asp-action="Create" method="post">
                             <div id="reservation-popup" class="reservation-popup">
                                 <div class="popup-content">
-                                    <h1>Popup</h1>
+                                    <h1 class="popup-content__title">Ders Rezervasyonu</h1>
+                                    <p class="popup-credits">Bu ders için kalan krediniz: <span id="credits-info-2">0</span></p>
+                                    <hr />
 
                                     <!-- Bootstrap datepicker -->
-                                    <label for="datepicker">Tarih</label>
+                                    <label class="input-label">Tarih</label>
                                     <div class="input-group date" data-provide="datepicker" id="datepicker">
                                         <input type="text" class="form-control">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
+                                        <span class="input-group-append">
+                                            <span class="input-group-text" style="border-bottom-left-radius: 0; border-top-left-radius: 0">
+                                                <i class="bi bi-calendar2-check"></i>
+                                            </span>
+                                        </span>
                                     </div>
 
                                     <!-- Hour picker -->
-                                    <label for="hourpicker">Saat</label>
-                                    <div class="form-floating">
-                                        <select id="hourpicker" class="form-select border-o shadow">
-                                            <option disabled selected>--Saat seçiniz--</option>
-                                        </select>
-                                    </div>
+                                    <label class="input-label">Saat</label>
+                                    <select id="hourpicker" class="form-select reserve-select">
+                                        <option disabled selected>--Saat seçiniz--</option>
+                                    </select>
 
-                                    <button type="button" onclick="closePopup()">Vazgeç</button>
+                                    <div class="reservation-button-group">
+                                        <a type="button" href="#">Tamamla</a>
+                                        <button type="button" onclick="closePopup()">Vazgeç</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -236,7 +240,7 @@
                 daysOfWeekHighlighted: getAvailableDays(),
                 autoclose: true,
                 todayHighlight: false,
-                orientation: "bottom auto",
+                orientation: "bottom left",
 
                 // Set the start date to the first day of the current month
                 startDate: new Date(
@@ -252,23 +256,53 @@
                 )
             }).on('changeDate', function (e) {
                 // When a new date is selected, update the select list for available hours
-                hourpickerSelect.innerHTML = '<option disabled selected>Saat seçiniz</option>';
-                let day = e.date.getDay();
-                
-                scheduleMap.get(day).forEach(function (element) {
-                    var option = document.createElement('option');
-                    option.text = element;
-                    hourpickerSelect.add(option);
+                hourpickerSelect.innerHTML = '<option disabled selected>--Saat seçiniz--</option>';
+
+                // AJAX call to fetch the reservation counts for each hour in the selected date
+                var date = $("#datepicker").data('datepicker').getFormattedDate('yyyy-mm-dd');
+                fetch(`/Public/Reservation/GetReservationCounts/${courseId}/${date}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    var dayOfWeek = e.date.getDay();
+                    var courseQuota = @Model.Quota;
+                    for (const hour of scheduleMap.get(dayOfWeek)) {
+                        var option = document.createElement('option');
+                        option.text = hour;
+                        
+                        if (data.hasOwnProperty(hour)) {
+                            const resCount = data[hour];
+                            if (resCount >= 1) {
+                                option.text += " - Kontenjan " + courseQuota + "/" + courseQuota;
+                                option.style = "color: rgb(180, 50, 50);";
+                                option.disabled = true;
+                            }
+                        }
+
+                        hourpickerSelect.add(option);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching reservation counts:', error);
+                    return response.json();
                 });
             });
         });
 
+        /*
         hourpickerSelect.addEventListener('change', function (event) {
-            // Callback for when the selection changes which retrieves current available quota
-            // TODO ajax call to fetch current quotas of the selected day
             // event.target.value
-            
         });
+        */
     </script>
 
 }

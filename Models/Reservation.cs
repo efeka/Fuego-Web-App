@@ -4,20 +4,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
-    public class UserSchedule
+    public class Reservation
     {
         [Key]
         public int ReservationId { get; set; }
 
         [ValidateNever]
-        [ForeignKey("ScheduleId")]
-        public Schedule Schedule { get; set; }
-        public int ScheduleId { get; set; }
+        [ForeignKey("CourseId")]
+        public Course Course { get; set; }
+        public int CourseId { get; set; }
 
         [ValidateNever]
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
         public string ApplicationUserId { get; set; }
 
+        [Required]
+        public DateOnly Date { get; set; }
+
+        [Required]
+        public TimeOnly Time { get; set; }
     }
 }
